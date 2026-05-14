@@ -1,0 +1,20 @@
+{
+    "appName": "Expenso",
+    "loginSubtitle": "Welcome back, please sign in.",
+    "registerSubtitle": "Create your free account today.",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "username or email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "validationError": "Please provide username and password",
+    "loginError": "Username or password is incorrect",
+    "registerError": "Username already exists",
+    "submitLoading": "Processing...",
+    "signInButton": "Sign In",
+    "createAccountButton": "Create Account",
+    "pleaseWait": "Please wait...",
+    "newHerePrompt": "New here? ",
+    "existingAccountPrompt": "Already have an account? ",
+    "createAccountLink": "Create account",
+    "signInLink": "Sign in"
+}

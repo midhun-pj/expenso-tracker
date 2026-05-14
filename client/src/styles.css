@@ -1,0 +1,315 @@
+@import "tailwindcss";
+
+
+/* ============================================
+   EXPENSO - CSS VARIABLES THEMING SYSTEM
+   ============================================ */
+
+/* Default Theme: Ocean Blue */
+:root {
+    /* Primary Brand Colors */
+    --color-primary-50: #eef2ff;
+    --color-primary-100: #e0e7ff;
+    --color-primary-200: #c7d2fe;
+    --color-primary-500: #6366f1;
+    --color-primary-600: #4f46e5;
+    --color-primary-700: #4338ca;
+    --color-primary-800: #3730a3;
+    --color-primary-900: #312e81;
+
+    /* Success/Income Colors */
+    --color-success-50: #ecfdf5;
+    --color-success-100: #d1fae5;
+    --color-success-200: #a7f3d0;
+    --color-success-500: #10b981;
+    --color-success-600: #059669;
+    --color-success-700: #047857;
+    --color-success-800: #065f46;
+    --color-success-900: #064e3b;
+
+    /* Error/Expense Colors */
+    --color-error-50: #fef2f2;
+    --color-error-100: #fee2e2;
+    --color-error-200: #fecaca;
+    --color-error-500: #ef4444;
+    --color-error-600: #dc2626;
+    --color-error-700: #b91c1c;
+    --color-error-800: #991b1b;
+    --color-error-900: #7f1d1d;
+
+    /* Warning Colors */
+    --color-warning-50: #fffbeb;
+    --color-warning-100: #fef3c7;
+    --color-warning-500: #f59e0b;
+    --color-warning-600: #d97706;
+
+    /* Info Colors */
+    --color-info-50: #f0f9ff;
+    --color-info-100: #e0f2fe;
+    --color-info-500: #0ea5e9;
+    --color-info-600: #0284c7;
+
+    /* Neutral/Background Colors */
+    --color-neutral-50: #f8fafc;
+    --color-neutral-100: #f1f5f9;
+    --color-neutral-200: #e2e8f0;
+    --color-neutral-300: #cbd5e1;
+    --color-neutral-400: #94a3b8;
+    --color-neutral-500: #64748b;
+    --color-neutral-600: #475569;
+    --color-neutral-700: #334155;
+    --color-neutral-800: #1e293b;
+    --color-neutral-900: #0f172a;
+
+    /* Chart Colors */
+    --color-chart-1: #6366f1;
+    --color-chart-2: #ec4899;
+    --color-chart-3: #8b5cf6;
+    --color-chart-4: #14b8a6;
+    --color-chart-5: #f59e0b;
+    --color-chart-6: #3b82f6;
+    --color-chart-7: #ef4444;
+
+    /* Special UI Colors */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-border: #e2e8f0;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+    --color-overlay: rgba(0, 0, 0, 0.5);
+
+    /* Semantic Colors (mapped from above) */
+    --bg-page: var(--color-neutral-50);
+    --bg-card: var(--color-white);
+    --bg-input: var(--color-neutral-50);
+    --text-primary: var(--color-neutral-900);
+    --text-secondary: var(--color-neutral-500);
+    --text-muted: var(--color-neutral-400);
+}
+
+/* Theme 2: Sunset Orange */
+[data-theme="sunset"] {
+    /* Primary Brand Colors - Orange/Amber */
+    --color-primary-50: #fff7ed;
+    --color-primary-100: #ffedd5;
+    --color-primary-200: #fed7aa;
+    --color-primary-500: #f97316;
+    --color-primary-600: #ea580c;
+    --color-primary-700: #c2410c;
+    --color-primary-800: #9a3412;
+    --color-primary-900: #7c2d12;
+
+    /* Success/Income Colors - Lime/Green */
+    --color-success-50: #f7fee7;
+    --color-success-100: #ecfccb;
+    --color-success-200: #d9f99d;
+    --color-success-500: #84cc16;
+    --color-success-600: #65a30d;
+    --color-success-700: #4d7c0f;
+    --color-success-800: #3f6212;
+    --color-success-900: #365314;
+
+    /* Error/Expense Colors - Red/Pink */
+    --color-error-50: #fdf2f8;
+    --color-error-100: #fce7f3;
+    --color-error-200: #fbcfe8;
+    --color-error-500: #ec4899;
+    --color-error-600: #db2777;
+    --color-error-700: #be185d;
+    --color-error-800: #9f1239;
+    --color-error-900: #831843;
+
+    /* Warning Colors */
+    --color-warning-50: #fefce8;
+    --color-warning-100: #fef9c3;
+    --color-warning-500: #eab308;
+    --color-warning-600: #ca8a04;
+
+    /* Info Colors */
+    --color-info-50: #eff6ff;
+    --color-info-100: #dbeafe;
+    --color-info-500: #3b82f6;
+    --color-info-600: #2563eb;
+
+    /* Neutral/Background Colors - Warm grays */
+    --color-neutral-50: #fafaf9;
+    --color-neutral-100: #f5f5f4;
+    --color-neutral-200: #e7e5e4;
+    --color-neutral-300: #d6d3d1;
+    --color-neutral-400: #a8a29e;
+    --color-neutral-500: #78716c;
+    --color-neutral-600: #57534e;
+    --color-neutral-700: #44403c;
+    --color-neutral-800: #292524;
+    --color-neutral-900: #1c1917;
+
+    /* Chart Colors */
+    --color-chart-1: #f97316;
+    --color-chart-2: #ec4899;
+    --color-chart-3: #a855f7;
+    --color-chart-4: #84cc16;
+    --color-chart-5: #eab308;
+    --color-chart-6: #3b82f6;
+    --color-chart-7: #ef4444;
+}
+
+/* Theme 3: Forest Green */
+[data-theme="forest"] {
+    /* Primary Brand Colors - Green/Emerald */
+    --color-primary-50: #ecfdf5;
+    --color-primary-100: #d1fae5;
+    --color-primary-200: #a7f3d0;
+    --color-primary-500: #10b981;
+    --color-primary-600: #059669;
+    --color-primary-700: #047857;
+    --color-primary-800: #065f46;
+    --color-primary-900: #064e3b;
+
+    /* Success/Income Colors - Cyan/Sky */
+    --color-success-50: #f0f9ff;
+    --color-success-100: #e0f2fe;
+    --color-success-200: #bae6fd;
+    --color-success-500: #06b6d4;
+    --color-success-600: #0891b2;
+    --color-success-700: #0e7490;
+    --color-success-800: #155e75;
+    --color-success-900: #164e63;
+
+    /* Error/Expense Colors - Orange/Red */
+    --color-error-50: #fff7ed;
+    --color-error-100: #ffedd5;
+    --color-error-200: #fed7aa;
+    --color-error-500: #f97316;
+    --color-error-600: #ea580c;
+    --color-error-700: #c2410c;
+    --color-error-800: #9a3412;
+    --color-error-900: #7c2d12;
+
+    /* Warning Colors */
+    --color-warning-50: #fefce8;
+    --color-warning-100: #fef9c3;
+    --color-warning-500: #eab308;
+    --color-warning-600: #ca8a04;
+
+    /* Info Colors */
+    --color-info-50: #f0fdfa;
+    --color-info-100: #ccfbf1;
+    --color-info-500: #14b8a6;
+    --color-info-600: #0d9488;
+
+    /* Neutral/Background Colors - True grays */
+    --color-neutral-50: #fafafa;
+    --color-neutral-100: #f5f5f5;
+    --color-neutral-200: #e5e5e5;
+    --color-neutral-300: #d4d4d4;
+    --color-neutral-400: #a3a3a3;
+    --color-neutral-500: #737373;
+    --color-neutral-600: #525252;
+    --color-neutral-700: #404040;
+    --color-neutral-800: #262626;
+    --color-neutral-900: #171717;
+
+    /* Chart Colors */
+    --color-chart-1: #10b981;
+    --color-chart-2: #06b6d4;
+    --color-chart-3: #8b5cf6;
+    --color-chart-4: #14b8a6;
+    --color-chart-5: #f59e0b;
+    --color-chart-6: #3b82f6;
+    --color-chart-7: #f97316;
+}
+
+/* ============================================
+   UTILITY CLASSES USING CSS VARIABLES
+   ============================================ */
+
+/* Background Colors */
+.bg-primary {
+    background-color: var(--color-primary-600);
+}
+
+.bg-primary-50 {
+    background-color: var(--color-primary-50);
+}
+
+.bg-primary-100 {
+    background-color: var(--color-primary-100);
+}
+
+.bg-primary-hover:hover {
+    background-color: var(--color-primary-700);
+}
+
+.bg-success {
+    background-color: var(--color-success-600);
+}
+
+.bg-success-50 {
+    background-color: var(--color-success-50);
+}
+
+.bg-success-100 {
+    background-color: var(--color-success-100);
+}
+
+.bg-success-hover:hover {
+    background-color: var(--color-success-700);
+}
+
+.bg-error {
+    background-color: var(--color-error-600);
+}
+
+.bg-error-50 {
+    background-color: var(--color-error-50);
+}
+
+.bg-error-100 {
+    background-color: var(--color-error-100);
+}
+
+.bg-error-hover:hover {
+    background-color: var(--color-error-700);
+}
+
+/* Text Colors */
+.text-primary {
+    color: var(--color-primary-600);
+}
+
+.text-primary-700 {
+    color: var(--color-primary-700);
+}
+
+.text-success {
+    color: var(--color-success-600);
+}
+
+.text-error {
+    color: var(--color-error-600);
+}
+
+/* Border Colors */
+.border-primary {
+    border-color: var(--color-primary-600);
+}
+
+.ring-primary {
+    --tw-ring-color: var(--color-primary-500);
+}
+
+.ring-success {
+    --tw-ring-color: var(--color-success-500);
+}
+
+.ring-error {
+    --tw-ring-color: var(--color-error-500);
+}
+
+/* Shadow Colors */
+.shadow-primary {
+    box-shadow: 0 10px 15px -3px var(--color-primary-200);
+}
+
+.shadow-success {
+    box-shadow: 0 10px 15px -3px var(--color-success-200);
+}

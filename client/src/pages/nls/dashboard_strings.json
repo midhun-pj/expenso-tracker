@@ -1,0 +1,13 @@
+{
+    "totalIncome": "Total Income",
+    "totalSpent": "Total Spent",
+    "netBalance": "Net Balance",
+    "incomeBadge": "Income",
+    "expenseBadge": "Expense",
+    "expenseDistribution": "Expense Distribution",
+    "monthlyTrends": "Monthly Trends",
+    "noExpenseData": "No expense data available",
+    "noMonthlyData": "No monthly data available",
+    "allYears": "All Years",
+    "allMonths": "All Months"
+}

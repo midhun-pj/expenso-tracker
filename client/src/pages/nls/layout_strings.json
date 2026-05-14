@@ -1,0 +1,21 @@
+{
+    "appName": "Expenso",
+    "signOut": "Sign Out",
+    "menuDashboard": "Dashboard",
+    "menuExpenses": "Expenses",
+    "menuGrocery": "Grocery Tracker",
+    "menuSettings": "Configuration",
+    "menuProducts": "Products",
+    "pageDashboardTitle": "Dashboard Overview",
+    "pageDashboardSubtitle": "Welcome back, here is your financial summary.",
+    "pageExpensesTitle": "Expense Management",
+    "pageExpensesSubtitle": "View and manage your transaction history.",
+    "pageGroceryTitle": "Grocery Price Tracker",
+    "pageGrocerySubtitle": "Compare prices and find the best deals.",
+    "pageSettingsTitle": "App Configuration",
+    "pageSettingsSubtitle": "Manage your categories and store preferences.",
+    "pageDefaultTitle": "Expenso",
+    "pageDefaultSubtitle": "",
+    "pageProductTitle": "Manage accounts",
+    "pageProductSubtitle": "Manage all your accounts"
+}

@@ -1,0 +1,15 @@
+{
+    "title": "Accounts",
+    "description": "Manage accounts used for balances and transactions.",
+    "accountType": "Account Type",
+    "addButton": "Add Account",
+    "clearButton": "Clear",
+    "nameColumn": "Name",
+    "typeColumn": "Type",
+    "balanceColumn": "Balance",
+    "actionsColumn": "Actions",
+    "removeAccount": "Remove account",
+    "emptyState": "No accounts added yet.",
+    "name": "Accoount name",
+    "balance": "Initial balance"
+}

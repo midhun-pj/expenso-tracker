@@ -1,0 +1,13 @@
+{
+    "title": "Expense Categories",
+    "description": "Manage the categories available for your expenses.",
+    "categoryPlaceholder": "Add new category",
+    "addButton": "Add",
+    "typeLabel": "Type",
+    "expense": "Expense",
+    "income": "Income",
+    "categoryListTitle": "Available categories",
+    "removeCategory": "Remove category",
+    "name": "Category name",
+    "type": "Category type"
+}

@@ -1,0 +1,8 @@
+{
+  "date": "Date",
+  "description": "Description",
+  "category": "Category",
+  "amount": "Amount",
+  "actions": "Actions",
+  "loadingExpenses": "Loading expenses..."
+}

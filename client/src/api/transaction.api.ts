@@ -40,3 +40,12 @@ export async function createTransfer(data: CreateTransferRequest): Promise<Trans
     });
     return (await handleResponse(res)) as Transfer;
 }
+
+export async function updateTransactionDetails(id: string, data: { description?: string, date?: string }): Promise<Transaction> {
+    const res = await fetch(`${apiUrl}/${id}/details`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
+        body: JSON.stringify(data),
+    });
+    return (await handleResponse(res)) as Transaction;
+}

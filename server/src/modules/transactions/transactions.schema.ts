@@ -29,6 +29,11 @@ export const getTransactionsQuerySchema = z.object({
     search: z.string().optional(),
 })
 
+export const updateTransactionDetailsSchema = z.object({
+    description: z.string().optional(),
+    date: z.string().datetime().optional(),
+})
+
 export type TransactionInput = z.infer<typeof transactionSchema>
 export type TransferInput = z.infer<typeof transferSchema>
 

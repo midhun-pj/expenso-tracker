@@ -19,7 +19,7 @@ export default function SelectInput({
       error={error}
     >
       <select
-        value={String(value ?? "")}
+        value={String(value)}
         disabled={field.disabled}
         onChange={(e) =>
           onChange(field.name, e.target.value)
@@ -30,11 +30,8 @@ export default function SelectInput({
           Select {field.label}
         </option>
 
-        {field.options.map((option) => (
-          <option
-            key={option.value}
-            value={option.value}
-          >
+        {field.options.map((option, index) => (
+          <option key={index} value={option.value}>
             {option.label}
           </option>
         ))}

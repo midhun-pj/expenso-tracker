@@ -5,7 +5,8 @@ import {
     createTransfer,
     getTransactions,
     updateTransaction,
-    deleteTransaction
+    deleteTransaction,
+    updateTransactionDetails
 } from './transactions.controller'
 
 export default async function transactionRoutes(fastify: FastifyInstance) {
@@ -18,4 +19,6 @@ export default async function transactionRoutes(fastify: FastifyInstance) {
     fastify.delete('/:id', { preHandler: [fastify.authenticate], }, deleteTransaction)
 
     fastify.get('/', { preHandler: [fastify.authenticate], }, getTransactions)
+
+    fastify.patch('/:id/details', { preHandler: [fastify.authenticate], }, updateTransactionDetails)
 }

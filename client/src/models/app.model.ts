@@ -1,7 +1,7 @@
 import type { User } from "@models/user.model";
 import type { Account } from "@models/account.model";
 import type { Category, CategoryType } from "@models/category.model";
-import type { Transaction, Transfer } from "@models/transaction.model";
+import type { Transaction, Transfer, UpdateTransactionDetailsRequest } from "@models/transaction.model";
 import type { Config, ThemeConfig } from "@models/settings.model";
 import type { PaginatedResponse } from "@models/common.model";
 import type { TransactionsQuery } from "@models/transaction.model";
@@ -54,6 +54,7 @@ export interface AppState {
     createTransaction: (item: Omit<Transaction, "id">) => Promise<void>;
     createTransfer: (item: Omit<Transfer, "id">) => Promise<void>;
     getTransactions: (query: TransactionsQuery) => Promise<void>;
+    updateTransactionDetails: (id: string, data: UpdateTransactionDetailsRequest) => Promise<void>;
 
     loadDashboardSummary: (month?: number, year?: number) => Promise<void>;
 }

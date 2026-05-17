@@ -31,6 +31,7 @@ export default function ToggleGroupInput({
               onChange={() => onChange(field.name, option.value)}
               label={option.label}
               isActive={isActive}
+              isDisabled={field.disabled}
             />
 
           );

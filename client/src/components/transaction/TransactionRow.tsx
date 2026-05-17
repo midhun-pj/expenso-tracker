@@ -1,15 +1,18 @@
 import React from "react";
 import type { Transaction } from "@models/transaction.model";
 import { formatCurrency } from "@utils/app.methods";
+import { Pencil } from "lucide-react";
 
 type TransactionRowProps = {
   currency: string;
   transaction: Transaction;
+  onEdit: (transaction: Transaction) => void;
 }
 
 export const TransactionRow: React.FC<TransactionRowProps> = ({
   currency,
   transaction,
+  onEdit,
 }) => {
 
   return (
@@ -43,24 +46,17 @@ export const TransactionRow: React.FC<TransactionRowProps> = ({
         </span>
       </td>
 
-      {/* <td className="px-4 md:px-6 py-4 text-center">
+      <td className="px-4 md:px-6 py-4 text-center">
         <div className="flex items-center justify-center gap-2">
           <button
-            onClick={() => onEdit(expense)}
+            onClick={() => onEdit(transaction)}
             className="text-slate-400 transition-colors p-1" style={{ color: 'var(--color-primary-600)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-primary-600)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-neutral-400)'}
             title="Edit expense"
           >
             <Pencil className="h-4 w-4" />
           </button>
-          <button
-            onClick={() => onDelete(expense.id)}
-            className="text-slate-400 hover:text-red-500 transition-colors p-1"
-            title="Delete expense"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
         </div>
-      </td> */}
+      </td>
     </tr>
   );
 };

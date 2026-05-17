@@ -4,6 +4,7 @@ import {
     getTransactionsQuerySchema,
     transactionSchema,
     transferSchema,
+    updateTransactionDetailsSchema,
 } from './transactions.schema'
 
 import {
@@ -11,6 +12,7 @@ import {
     createTransferService,
     deleteTransactionService,
     getTransactionsService,
+    updateTransactionDetailService,
     updateTransactionService,
 } from './transactions.service'
 
@@ -82,6 +84,21 @@ export async function deleteTransaction(request: FastifyRequest, reply: FastifyR
         request.server.prisma,
         user.userId,
         id
+    )
+
+    return reply.send(result)
+}
+
+export async function updateTransactionDetails(request: FastifyRequest, reply: FastifyReply) {
+    const body = updateTransactionDetailsSchema.parse(request.body)
+    const user = request.user as any
+    const { id } = request.params as { id: string }
+
+    const result = await updateTransactionDetailService(
+        request.server.prisma,
+        user.userId,
+        id,
+        body
     )
 
     return reply.send(result)

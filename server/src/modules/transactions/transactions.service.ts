@@ -411,3 +411,26 @@ export async function deleteTransactionService(
         return transaction
     })
 }
+
+export async function updateTransactionDetailService(
+    prisma: PrismaClient,
+    userId: string,
+    id: string,
+    data: {
+        description?: string
+        date?: string
+    }
+) {
+    return prisma.$transaction(async (tx) => {
+        const transaction = await tx.transaction.update({
+            where: { id },
+            data: {
+                description: data.description,
+                date: data.date ? new Date(data.date) : new Date(),
+                userId,
+            },
+        })
+
+        return transaction
+    })
+}

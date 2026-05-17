@@ -13,7 +13,7 @@ import FilterDropdown from "@components/common/FilterDropdown";
 
 
 // models 
-import { TransactionFilterOptions, type TransactionFilterType } from "@models/transaction.model";
+import { TransactionFilterOptions, type Transaction, type TransactionFilterType } from "@models/transaction.model";
 
 import Strings from "./nls/transactions_strings.json";
 import { DEFAULT_FILTER_PARAMS } from "@utils/app.constant";
@@ -31,7 +31,8 @@ export const Transactions: FC = () => {
     accounts,
     createTransaction,
     createTransfer,
-    getTransactions
+    getTransactions,
+    updateTransactionDetails
   } = useStore();
 
   // Filter State
@@ -44,6 +45,8 @@ export const Transactions: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openTransferModal, setOpenTransferModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
 
   const monthOptions = generateMonthOptions();
   const yearOptions = generateYearOptions();
@@ -62,6 +65,16 @@ export const Transactions: FC = () => {
 
   const openAddModal = () => {
     setIsModalOpen(true);
+  };
+
+  const openEditModal = (transaction: Transaction) => {
+    setIsModalOpen(true);
+    setEditingTransaction(transaction);
+  };
+
+  const closeAddTransactionModal = () => {
+    setIsModalOpen(false);
+    setEditingTransaction(null);
   };
 
   const openMakeModal = () => {
@@ -144,6 +157,7 @@ export const Transactions: FC = () => {
         currency={currency}
         loading={loading}
         type={filterType}
+        onEdit={openEditModal}
       />
 
       {/* {expensePagination && expensePagination.totalCount > 0 && (
@@ -180,10 +194,12 @@ export const Transactions: FC = () => {
 
       {isModalOpen && (
         <CreateTransaction
-          setIsModalOpen={setIsModalOpen}
+          setIsModalOpen={closeAddTransactionModal}
           accounts={accounts}
           categories={categories}
           createTransaction={createTransaction}
+          editingTransaction={editingTransaction}
+          updateTransactionDetails={updateTransactionDetails}
         />
       )}
 

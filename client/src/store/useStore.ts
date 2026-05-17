@@ -5,7 +5,7 @@ import type { User } from "@models/user.model";
 import type { AppState } from "@models/app.model";
 import type { Account } from "@models/account.model";
 import type { CategoryType, Category } from "@models/category.model";
-import type { CreateTransferRequest, Transaction, TransactionsQuery } from "@models/transaction.model";
+import type { CreateTransferRequest, Transaction, TransactionsQuery, UpdateTransactionDetailsRequest } from "@models/transaction.model";
 import { DEFAULT_CURRENCY, DEFAULT_THEME, THEME_PRESETS, type Config, type ThemeConfig } from "@models/settings.model";
 
 // api services
@@ -282,6 +282,16 @@ export const useStore = create<AppState>((set) => {
         set({ transactions });
       } catch (err) {
         console.error("loadAccounts failed", err);
+      }
+    },
+
+    updateTransactionDetails: async (id: string, data: UpdateTransactionDetailsRequest) => {
+      try {
+        await transactionApi.updateTransactionDetails(id, data);
+        await state.getTransactions(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("updateTransactionDetails failed", err);
+        throw err;
       }
     },
 

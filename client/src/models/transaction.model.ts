@@ -1,6 +1,11 @@
 import type { Account } from "./account.model";
 import { CATEGORY_TYPES, type Category } from "./category.model";
 
+export type UpdateTransactionDetailsRequest = {
+  description?: string;
+  date?: string;
+};
+
 export type Transaction = {
   id?: string;
   accountId: string;

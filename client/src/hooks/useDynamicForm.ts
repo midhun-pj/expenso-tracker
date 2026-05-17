@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { FormErrors, FormField, FormValues } from "@models/common.model";
 
 interface UseDynamicFormReturn {
@@ -14,8 +14,11 @@ interface UseDynamicFormReturn {
   setValues: React.Dispatch<React.SetStateAction<FormValues>>;
 }
 
-export function useDynamicForm(fields: FormField[], initialValues: FormValues = {}): UseDynamicFormReturn {
-  const generateInitialValues = (): FormValues => {
+export function useDynamicForm(
+  fields: FormField[],
+  initialValues: FormValues = {}): UseDynamicFormReturn {
+
+  const generateInitialValues = useCallback((): FormValues => {
     const values: FormValues = {};
 
     fields.forEach((field) => {
@@ -26,7 +29,7 @@ export function useDynamicForm(fields: FormField[], initialValues: FormValues = 
     });
 
     return values;
-  };
+  }, [fields, initialValues]);
 
   const [values, setValues] = useState<FormValues>(generateInitialValues);
 
@@ -34,16 +37,18 @@ export function useDynamicForm(fields: FormField[], initialValues: FormValues = 
 
   const [errors, setErrors] = useState<FormErrors>({});
 
-  // ONLY hydrate when edit data changes
   useEffect(() => {
-    if (Object.keys(initialValues).length === 0) {
-      return;
-    }
+    if (!initialValues || Object.keys(initialValues).length === 0) return;
 
-    setValues((prev) => ({
-      ...prev,
-      ...initialValues,
-    }));
+    setValues((prev) => {
+      const next = { ...prev };
+
+      Object.entries(initialValues).forEach(([key, value]) => {
+        next[key] = value;
+      });
+
+      return next;
+    });
   }, [initialValues]);
 
   const handleChange = (name: string, value: unknown) => {
@@ -62,11 +67,14 @@ export function useDynamicForm(fields: FormField[], initialValues: FormValues = 
     const newErrors: FormErrors = {};
 
     fields.forEach((field) => {
+      if (field.disabled) return;
+
       const value = values[field.name];
 
       const rules = field.validation;
 
       if (!rules) return;
+
 
       // REQUIRED
       if (rules.required) {
@@ -165,10 +173,10 @@ export function useDynamicForm(fields: FormField[], initialValues: FormValues = 
     return Object.keys(newErrors).length === 0;
   };
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setValues(generateInitialValues());
     setErrors({});
-  };
+  }, [generateInitialValues]);
 
   return {
     values,

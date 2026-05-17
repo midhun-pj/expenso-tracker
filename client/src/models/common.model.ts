@@ -85,6 +85,7 @@ export interface ToggleButtonProps {
   onChange: () => void;
   label: string;
   isActive: boolean;
+  isDisabled?: boolean;
 }
 
 export interface FilterDropdownProps {
@@ -106,6 +107,7 @@ export interface FormFieldWrapperProps {
   required?: boolean;
   error?: string;
   children: React.ReactNode;
+  isDisabled?: boolean;
 }
 
 export interface SelectOption {

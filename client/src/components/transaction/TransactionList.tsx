@@ -9,7 +9,9 @@ type Props = {
   currency: string;
   loading: boolean;
 
+
   type: TransactionFilterType;
+  onEdit: (transaction: Transaction) => void;
 };
 
 export default function TransactionList({
@@ -17,6 +19,7 @@ export default function TransactionList({
   loading,
   transactions,
   type,
+  onEdit,
 }: Props) {
 
   const filteredTransactions = transactions?.filter((transaction: Transaction) => {
@@ -47,9 +50,9 @@ export default function TransactionList({
                 {Strings.category}
               </th>
               <th className="px-4 md:px-6 py-4 text-right">{Strings.amount}</th>
-              {/* <th className="px-4 md:px-6 py-4 text-center">
+              <th className="px-4 md:px-6 py-4 text-center">
                 {Strings.actions}
-              </th> */}
+              </th>
             </tr>
           </thead>
 
@@ -59,6 +62,7 @@ export default function TransactionList({
                 key={transaction.id}
                 transaction={transaction}
                 currency={currency}
+                onEdit={onEdit}
               />
             ))}
           </tbody>

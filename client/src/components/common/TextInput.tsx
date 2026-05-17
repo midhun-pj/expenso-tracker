@@ -24,10 +24,9 @@ export default function TextInput({
         placeholder={field.placeholder}
         disabled={field.disabled}
         onChange={(e) => {
-          const val =
-            field.type === "number"
-              ? Number(e.target.value)
-              : e.target.value;
+          const val = field.type === "number"
+            ? Number(e.target.value)
+            : e.target.value;
 
           onChange(field.name, val);
         }}

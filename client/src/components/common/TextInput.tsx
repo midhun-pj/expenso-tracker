@@ -24,11 +24,13 @@ export default function TextInput({
         placeholder={field.placeholder}
         disabled={field.disabled}
         onChange={(e) => {
-          const val = field.type === "number"
-            ? Number(e.target.value)
-            : e.target.value;
+          const raw = e.target.value;
 
-          onChange(field.name, val);
+          if (field.type === "number") {
+            onChange(field.name, raw); // keep string
+          } else {
+            onChange(field.name, raw);
+          }
         }}
         className="w-full px-3 py-2 border border-slate-300 rounded-lg"
       />

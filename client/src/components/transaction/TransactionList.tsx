@@ -8,8 +8,6 @@ type Props = {
   transactions: Transaction[] | undefined;
   currency: string;
   loading: boolean;
-
-
   type: TransactionFilterType;
   onEdit: (transaction: Transaction) => void;
 };

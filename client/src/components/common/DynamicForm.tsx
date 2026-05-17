@@ -36,7 +36,20 @@ export default function DynamicForm({ fields, initialValues = {}, submitLabel = 
 
     if (!isValid) return;
 
-    onSubmit(values);
+    const normalizedValues = { ...values };
+
+    resolvedFields.forEach((field: FormField) => {
+      if (field.type === "number") {
+        const val = normalizedValues[field.name];
+
+        normalizedValues[field.name] =
+          val === "" || val === null || val === undefined
+            ? null
+            : Number(val);
+      }
+    });
+
+    onSubmit(normalizedValues);
 
     if (resetOnSubmit) {
       reset();

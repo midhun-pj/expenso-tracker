@@ -5,8 +5,19 @@ import type { User } from "@models/user.model";
 import type { AppState } from "@models/app.model";
 import type { Account } from "@models/account.model";
 import type { CategoryType, Category } from "@models/category.model";
-import type { CreateTransferRequest, Transaction, TransactionsQuery, UpdateTransactionDetailsRequest } from "@models/transaction.model";
-import { DEFAULT_CURRENCY, DEFAULT_THEME, THEME_PRESETS, type Config, type ThemeConfig } from "@models/settings.model";
+import type {
+  CreateTransferRequest,
+  Transaction,
+  TransactionsQuery,
+  UpdateTransactionDetailsRequest,
+} from "@models/transaction.model";
+import {
+  DEFAULT_CURRENCY,
+  DEFAULT_THEME,
+  THEME_PRESETS,
+  type Config,
+  type ThemeConfig,
+} from "@models/settings.model";
 
 // api services
 import * as configApi from "../api/config.api";
@@ -18,7 +29,6 @@ import * as authApi from "../api/auth.api";
 
 import { applyTheme } from "../utils/app.methods";
 import { DEFAULT_FILTER_PARAMS } from "../utils/app.constant";
-
 
 export const useStore = create<AppState>((set) => {
   let initialAuth = false;
@@ -52,18 +62,20 @@ export const useStore = create<AppState>((set) => {
         limit: 10,
         total: 0,
         totalPages: 0,
-      }
+      },
     },
     dashboardSummary: null,
 
-
     initializeData: async () => {
       try {
-
         await state.loadCategories().catch(() => []);
         await state.loadAccounts().catch(() => []);
-        const configResp = await configApi.fetchConfig().catch(() => ({ currency: DEFAULT_CURRENCY, themeConfig: DEFAULT_THEME }));
-
+        const configResp = await configApi
+          .fetchConfig()
+          .catch(() => ({
+            currency: DEFAULT_CURRENCY,
+            themeConfig: DEFAULT_THEME,
+          }));
 
         const currencySymbol = configResp?.currency;
         const themeCfg = configResp?.themeConfig;
@@ -72,7 +84,6 @@ export const useStore = create<AppState>((set) => {
           currency: currencySymbol,
           theme: themeCfg,
         });
-
 
         try {
           const root = document.documentElement;
@@ -155,7 +166,6 @@ export const useStore = create<AppState>((set) => {
       }
     },
 
-
     // Category Actions
     loadCategories: async () => {
       try {
@@ -191,11 +201,12 @@ export const useStore = create<AppState>((set) => {
       }
     },
 
-
     setCurrency: (symbol: string) => set({ currency: symbol }),
 
     setTheme: async (themeName: string) => {
-      const theme = THEME_PRESETS.find((t: ThemeConfig) => t.themeName === themeName);
+      const theme = THEME_PRESETS.find(
+        (t: ThemeConfig) => t.themeName === themeName,
+      );
 
       if (theme) {
         set({ theme });
@@ -210,7 +221,6 @@ export const useStore = create<AppState>((set) => {
         console.error("Failed to fetch config", err);
       }
     },
-
 
     setConfig: async (cfg: Config) => {
       try {
@@ -269,23 +279,36 @@ export const useStore = create<AppState>((set) => {
         await transactionApi.create(reqPayload);
 
         await state.getTransactions(DEFAULT_FILTER_PARAMS);
-
       } catch (err) {
         console.error("createTransaction failed", err);
         throw err;
       }
     },
 
-    getTransactions: async (params: TransactionsQuery) => {
+    getTransactions: async (params: TransactionsQuery, append = false) => {
       try {
         const transactions = await transactionApi.list(params);
-        set({ transactions });
+        set((state) => ({
+          transactions:
+            append && state.transactions
+              ? {
+                  data: [
+                    ...(state.transactions.data || []),
+                    ...transactions.data,
+                  ],
+                  pagination: transactions.pagination,
+                }
+              : transactions,
+        }));
       } catch (err) {
         console.error("loadAccounts failed", err);
       }
     },
 
-    updateTransactionDetails: async (id: string, data: UpdateTransactionDetailsRequest) => {
+    updateTransactionDetails: async (
+      id: string,
+      data: UpdateTransactionDetailsRequest,
+    ) => {
       try {
         await transactionApi.updateTransactionDetails(id, data);
         await state.getTransactions(DEFAULT_FILTER_PARAMS);
@@ -304,7 +327,6 @@ export const useStore = create<AppState>((set) => {
 
         await transactionApi.createTransfer(reqPayload);
         await state.getTransactions(DEFAULT_FILTER_PARAMS);
-
       } catch (err) {
         console.error("createTransfer failed", err);
         throw err;

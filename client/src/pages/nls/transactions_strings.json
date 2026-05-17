@@ -11,18 +11,5 @@
     "paginationOf": "of",
     "paginationResults": "results",
     "loading": "Loading...",
-    "loadMore": "Load More",
-    "modalTitleEdit": "Edit Expense",
-    "modalTitleAdd": "Add New Expense",
-    "labelDescription": "Description",
-    "placeholderDescription": "e.g., Weekly Groceries",
-    "typeExpense": "Expense",
-    "typeIncome": "Income",
-    "labelAmount": "Amount",
-    "labelDate": "Date",
-    "labelCategory": "Category",
-    "labelPaymentMethod": "Payment Method",
-    "optionNone": "None",
-    "btnSaveChanges": "Save Changes",
-    "btnSaveExpense": "Save Expense"
+    "loadMore": "Load More"
 }

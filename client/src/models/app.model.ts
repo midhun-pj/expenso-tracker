@@ -53,7 +53,7 @@ export interface AppState {
 
     createTransaction: (item: Omit<Transaction, "id">) => Promise<void>;
     createTransfer: (item: Omit<Transfer, "id">) => Promise<void>;
-    getTransactions: (query: TransactionsQuery) => Promise<void>;
+    getTransactions: (query: TransactionsQuery, append: boolean) => Promise<void>;
     updateTransactionDetails: (id: string, data: UpdateTransactionDetailsRequest) => Promise<void>;
 
     loadDashboardSummary: (month?: number, year?: number) => Promise<void>;

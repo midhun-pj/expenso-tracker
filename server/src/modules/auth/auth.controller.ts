@@ -1,24 +1,14 @@
-import {
-    FastifyReply,
-    FastifyRequest,
-} from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 
 import { z } from 'zod'
 
-import {
-    registerSchema,
-    loginSchema,
-} from './auth.schema'
+import { registerSchema, loginSchema } from './auth.schema'
 
-import {
-    hashPassword,
-    comparePassword,
-} from './auth.service'
+import { hashPassword, comparePassword } from './auth.service'
 
-export async function register(
-    request: FastifyRequest,
-    reply: FastifyReply
-) {
+import { LoginResponse, RegisterResponse } from '@models/auth.model'
+
+export async function register(request: FastifyRequest, reply: FastifyReply): Promise<RegisterResponse> {
     try {
         const body = registerSchema.parse(request.body)
 
@@ -73,10 +63,7 @@ export async function register(
     }
 }
 
-export async function login(
-    request: FastifyRequest,
-    reply: FastifyReply
-) {
+export async function login(request: FastifyRequest, reply: FastifyReply): Promise<LoginResponse> {
     try {
         const body = loginSchema.parse(request.body)
 
@@ -130,10 +117,7 @@ export async function login(
     }
 }
 
-export async function me(
-    request: FastifyRequest,
-    reply: FastifyReply
-) {
+export async function me(request: FastifyRequest, reply: FastifyReply) {
     try {
         const user = request.user as any
 

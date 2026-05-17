@@ -1,9 +1,7 @@
 import type { FC } from 'react';
 
-interface AppLogoProps {
-    size?: 'sm' | 'md';
-    color?: string;
-}
+import type { AppLogoProps } from '@models/app.model';
+
 
 export const AppLogo: FC<AppLogoProps> = ({ size = 'md', color }) => {
     const iconClass = size === 'sm' ? 'h-6 w-6' : 'h-8 w-8';

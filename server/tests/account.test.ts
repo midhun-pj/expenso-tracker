@@ -52,8 +52,6 @@ describe('Accounts Module', () => {
             .get('/api/accounts')
             .set('Authorization', `Bearer ${token}`)
 
-        console.log(response.body)
-
         expect(response.statusCode).toBe(200)
         expect(Array.isArray(response.body)).toBe(true)
     })

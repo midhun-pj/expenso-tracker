@@ -1,26 +1,22 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "lib": ["ES2022"],
-    "types": ["node"],
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ]
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@models/*": [
+        "./src/models/*"
+      ],
+      "@modules/*": [
+        "./src/modules/*"
+      ],
+    }
   },
   "include": [
-    "src/**/*",
-    "types/**/*",
-    "tests/**/*",
-    "scripts/**/*"
-  ],
-  "exclude": [
-    "node_modules"
+    "src"
   ]
 }

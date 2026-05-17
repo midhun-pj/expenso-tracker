@@ -1,10 +1,9 @@
 
-import FormFieldWrapper from "./FormFieldWrapper";
+import FormFieldWrapper from "@components/common/FormFieldWrapper";
+import ToggleButton from "@components/common/ToggleButton";
 
-import type {
-  BaseInputProps,
-  ToggleGroupField,
-} from "../../models/common.model";
+import type { BaseInputProps, ToggleGroupField } from "@models/common.model";
+
 interface Props extends BaseInputProps {
   field: ToggleGroupField;
 }
@@ -27,23 +26,13 @@ export default function ToggleGroupInput({
             value === option.value;
 
           return (
-            <button
+            <ToggleButton
               key={option.value}
-              type="button"
-              onClick={() =>
-                onChange(
-                  field.name,
-                  option.value
-                )
-              }
-              className={`px-3 py-2 rounded-lg font-medium transition-all text-sm ${
-                isActive
-                  ? "bg-blue-500 text-white shadow-md"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
-            >
-              {option.label}
-            </button>
+              onChange={() => onChange(field.name, option.value)}
+              label={option.label}
+              isActive={isActive}
+            />
+
           );
         })}
       </div>

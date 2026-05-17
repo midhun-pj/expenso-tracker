@@ -9,7 +9,7 @@ export async function getDashboardSummary(
     })
 
     const totalBalance = accounts.reduce(
-        (sum, acc) => sum + acc.balance,
+        (sum, acc) => sum + Number(acc.balance),
         0
     )
 
@@ -34,6 +34,17 @@ export async function getDashboardSummary(
             },
         })
 
+    const incomeAggregation =
+        await prisma.transaction.aggregate({
+            where: {
+                userId,
+                type: 'INCOME',
+            },
+            _sum: {
+                amount: true,
+            },
+        })
+
     const transferAggregation =
         await prisma.transaction.aggregate({
             where: {
@@ -51,8 +62,8 @@ export async function getDashboardSummary(
         recentTransactions: transactions,
         summary: {
             totalExpense: expenseAggregation._sum.amount || 0,
-            totalTransfer:
-                transferAggregation._sum.amount || 0,
+            totalTransfer: transferAggregation._sum.amount || 0,
+            totalIncome: incomeAggregation._sum.amount || 0,
         },
     }
 }

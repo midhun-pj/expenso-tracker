@@ -3,11 +3,12 @@ import {
     Trash2,
 } from 'lucide-react';
 
-import { ACCOUNT_TYPES, type AccountBase, type AccountsFormProps } from '../../models/account.model';
+import { ACCOUNT_TYPES, type AccountBase, type AccountsFormProps } from '@models/account.model';
+import type { FormField } from '@models/common.model';
+
+import DynamicForm from '@components/common/DynamicForm';
 
 import Strings from './nls/accounts_form.json';
-import DynamicForm from '../common/DynamicForm';
-import type { FormField } from '../../models/common.model';
 
 
 const fields: FormField[] = [
@@ -43,7 +44,7 @@ const fields: FormField[] = [
 
 ];
 
-export const AccountsForm = ({ accounts, createAccount, deleteAccount, }: AccountsFormProps) => {
+export const AccountsForm = ({ accounts, createAccount, removeAccount, }: AccountsFormProps) => {
 
 
     const handleAddAccount = async (accountData: AccountBase) => {
@@ -71,7 +72,7 @@ export const AccountsForm = ({ accounts, createAccount, deleteAccount, }: Accoun
     };
 
     return (
-        <section className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100">
+        <section className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 mb-5">
             <header className="flex items-center gap-3 mb-6">
                 <div className="bg-indigo-50 p-2 rounded-lg">
                     <CreditCard
@@ -164,7 +165,7 @@ export const AccountsForm = ({ accounts, createAccount, deleteAccount, }: Accoun
                                                 <button
                                                     type="button"
                                                     onClick={() =>
-                                                        deleteAccount(
+                                                        removeAccount(
                                                             account.id
                                                         )
                                                     }

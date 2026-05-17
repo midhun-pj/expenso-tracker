@@ -1,6 +1,6 @@
-import { API_BASE } from "../utils/app.constant";
-import { authHeaders, handleResponse } from "../utils/app.methods";
-import type { Category } from "../models/settings.model";
+import { API_BASE } from "@utils/app.constant";
+import { authHeaders, handleResponse } from "@utils/app.methods";
+import type { Category } from "@models/category.model";
 
 export async function fetchCategories(): Promise<Category[]> {
     const res = await fetch(`${API_BASE}/categories`, {

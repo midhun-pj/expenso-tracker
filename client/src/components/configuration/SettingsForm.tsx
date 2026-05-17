@@ -1,18 +1,14 @@
-import type { Supermarket } from '../../utils/app.models';
-import type { FC } from 'react';
-import { useState } from 'react';
-import { Settings as SettingsIcon } from 'lucide-react';
-import { COMMON_CURRENCIES, THEME_PRESETS } from '../../models/settings.model';
+import type { FC, FormEvent } from 'react';
 
-type SettingsFormProps = {
-    supermarkets: Supermarket[];
-    addSupermarket: (store: string) => Promise<void>;
-    removeSupermarket: (id: number) => Promise<void>;
-    currency: string;
-    theme: import('../../utils/app.models').ThemeConfig;
-    setConfig: (cfg: { theme: import('../../utils/app.models').ThemeConfig; currency: string }) => Promise<void>;
-    setTheme: (themeName: 'ocean' | 'sunset' | 'forest') => void;
-};
+import { useEffect, useState } from 'react';
+import { Settings as SettingsIcon } from 'lucide-react';
+
+import {
+    type Config, type ThemeConfig,
+    COMMON_CURRENCIES, THEME_PRESETS,
+    type SettingsFormProps
+} from '@models/settings.model';
+
 
 export const SettingsForm: FC<SettingsFormProps> = ({
     currency,
@@ -20,46 +16,52 @@ export const SettingsForm: FC<SettingsFormProps> = ({
     setConfig,
     setTheme,
 }) => {
-
-    const [navColor, setNavColor] = useState<string>(theme?.navColor ?? '#ffffff');
-    const [textColor, setTextColor] = useState<string>(theme?.textColor ?? '#0f172a');
-    const [buttonColor, setButtonColor] = useState<string>(theme?.buttonColor ?? '#10b981');
-    const [localCurrency, setLocalCurrency] = useState<string>(currency ?? '$');
+    const [navColor, setNavColor] = useState<string>(theme?.navColor);
+    const [textColor, setTextColor] = useState<string>(theme?.textColor);
+    const [primaryColor, setPrimaryColor] = useState<string>(theme?.primaryColor);
+    const [localCurrency, setLocalCurrency] = useState<string>(currency);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    const handleSaveTheme = async (e: React.FormEvent) => {
+    useEffect(() => {
+        if (!theme) return;
+
+        setNavColor(theme.navColor);
+        setTextColor(theme.textColor);
+        setPrimaryColor(theme.primaryColor);
+    }, [theme]);
+
+    const handleSaveTheme = async (e: FormEvent) => {
         e.preventDefault();
-        const cfg = { theme: { themeName: theme?.themeName, navColor, textColor, buttonColor }, currency: localCurrency };
-        await setConfig(cfg);
 
-        // Show success message
-        setSuccessMessage('Configuration saved successfully!');
-        setTimeout(() => setSuccessMessage(null), 3000);
-    };
-
-
-
-
-    const handleThemePresetClick = async (preset: any) => {
-        // Update local state with preset colors
-        setNavColor(preset.navColor);
-        setTextColor(preset.textColor);
-        setButtonColor(preset.primaryColor);
-
-        // Apply theme and save to API
-        setTheme(preset.name);
-
-        // Also save the colors via setConfig
-        const cfg = {
-            theme: {
-                themeName: preset.name,
-                navColor: preset.navColor,
-                textColor: preset.textColor,
-                buttonColor: preset.primaryColor,
+        const configuration: Config = {
+            themeConfig: {
+                themeName: theme?.themeName,
+                navColor,
+                textColor,
+                primaryColor,
             },
             currency: localCurrency,
-        };
-        await setConfig(cfg);
+        }
+
+        await setConfig(configuration);
+
+        showSuccessMessage();
+    };
+
+    const showSuccessMessage = () => {
+        setSuccessMessage('Configuration saved successfully!');
+        setTimeout(() => setSuccessMessage(null), 3000);
+    }
+
+
+
+
+    const handleThemePresetClick = async (preset: ThemeConfig) => {
+        setNavColor(preset.navColor);
+        setTextColor(preset.textColor);
+        setPrimaryColor(preset.primaryColor);
+
+        setTheme(preset.themeName);
     };
 
     return (
@@ -89,17 +91,17 @@ export const SettingsForm: FC<SettingsFormProps> = ({
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-3">Theme</label>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {THEME_PRESETS.map((preset) => (
+                            {THEME_PRESETS.map((preset: ThemeConfig) => (
                                 <button
-                                    key={preset.name}
+                                    key={preset.themeName}
                                     type="button"
                                     onClick={() => handleThemePresetClick(preset)}
-                                    className={`p-4 rounded-xl border-2 transition-all text-left ${theme?.themeName === preset.name
+                                    className={`p-4 rounded-xl border-2 transition-all text-left ${theme?.themeName === preset.themeName
                                         ? 'border-current shadow-lg scale-105'
                                         : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
                                         }`}
                                     style={{
-                                        borderColor: theme?.themeName === preset.name ? preset.primaryColor : undefined,
+                                        borderColor: theme?.themeName === preset.themeName ? preset.primaryColor : 'white',
                                     }}
                                 >
                                     <div className="grid grid-cols-2 gap-2 mb-3">
@@ -126,7 +128,7 @@ export const SettingsForm: FC<SettingsFormProps> = ({
                                     </div>
                                     <h3 className="font-bold text-slate-800 mb-1">{preset.label}</h3>
                                     <p className="text-xs text-slate-500">{preset.description}</p>
-                                    {theme?.themeName === preset.name && (
+                                    {theme?.themeName === preset.themeName && (
                                         <div className="mt-3 text-xs font-medium" style={{ color: preset.primaryColor }}>
                                             ✓ Active
                                         </div>
@@ -137,7 +139,7 @@ export const SettingsForm: FC<SettingsFormProps> = ({
                     </div>
 
                     {/* Currency Selector Row */}
-                    <div>
+                    <section>
                         <label className="block text-sm font-medium text-slate-700 mb-3">Currency</label>
                         <div className="flex items-center gap-3 flex-wrap">
                             {COMMON_CURRENCIES.map((symbol: string) => (
@@ -150,7 +152,7 @@ export const SettingsForm: FC<SettingsFormProps> = ({
                                         : 'bg-slate-50 hover:bg-slate-100'
                                         }`}
                                     style={{
-                                        backgroundColor: localCurrency === symbol ? buttonColor : undefined,
+                                        backgroundColor: localCurrency === symbol ? primaryColor : undefined,
                                         color: localCurrency === symbol ? '#ffffff' : undefined,
                                     }}
                                 >
@@ -162,17 +164,17 @@ export const SettingsForm: FC<SettingsFormProps> = ({
                                 onChange={(e) => setLocalCurrency(e.target.value)}
                                 placeholder="Custom"
                                 className="w-28 h-12 px-3 rounded-xl border border-slate-200 font-medium text-center focus:ring-2 focus:ring-offset-1 outline-none transition-all"
-                                style={{ '--tw-ring-color': buttonColor } as React.CSSProperties}
+                                style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                             />
                         </div>
-                    </div>
+                    </section>
 
                     {/* Save Button Row */}
-                    <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
+                    <section className="flex items-center gap-3 pt-4 border-t border-slate-100">
                         <button
                             type="submit"
                             className="px-6 py-2.5 rounded-lg text-white font-medium shadow-sm hover:shadow-md transition-all"
-                            style={{ backgroundColor: buttonColor }}
+                            style={{ backgroundColor: primaryColor }}
                         >
                             Save Configuration
                         </button>
@@ -182,14 +184,14 @@ export const SettingsForm: FC<SettingsFormProps> = ({
                                 // revert local inputs back to the saved store config
                                 setNavColor(theme?.navColor ?? '#ffffff');
                                 setTextColor(theme?.textColor ?? '#0f172a');
-                                setButtonColor(theme?.buttonColor ?? '#10b981');
+                                setPrimaryColor(theme?.primaryColor ?? '#10b981');
                                 setLocalCurrency(currency ?? '$');
                             }}
                             className="px-4 py-2.5 rounded-lg border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 transition-colors"
                         >
                             Cancel
                         </button>
-                    </div>
+                    </section>
                 </form>
             </div>
         </div>

@@ -1,0 +1,10 @@
+{
+    "titleAdd": "Make account transfer",
+    "description": "Description",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "accountFrom": "Transfer from",
+    "accountTo": "Transfer to",
+    "submitButtonLabel": "Create"
+}

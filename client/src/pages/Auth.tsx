@@ -1,5 +1,5 @@
 import { useState, useEffect, type FC, type FormEvent } from 'react';
-import { useStore } from '../store/useStore';
+import { useStore } from '@store/useStore';
 import { Eye, EyeOff, ArrowRight } from 'lucide-react';
 import strings from './nls/auth_strings.json';
 
@@ -31,7 +31,7 @@ export const Auth: FC = () => {
         setEmail('');
         setPassword('');
       }
-    } catch(err) {
+    } catch (err) {
       if (isLogin) {
         setError(strings.loginError);
       } else {

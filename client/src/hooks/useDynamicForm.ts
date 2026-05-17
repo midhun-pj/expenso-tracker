@@ -1,32 +1,20 @@
 import { useEffect, useState } from "react";
-import type {
-  FormErrors,
-  FormField,
-  FormValues,
-} from "../models/common.model";
+import type { FormErrors, FormField, FormValues } from "@models/common.model";
 
 interface UseDynamicFormReturn {
   values: FormValues;
   errors: FormErrors;
 
-  handleChange: (
-    name: string,
-    value: unknown
-  ) => void;
+  handleChange: (name: string, value: unknown) => void;
 
   validate: () => boolean;
 
   reset: () => void;
 
-  setValues: React.Dispatch<
-    React.SetStateAction<FormValues>
-  >;
+  setValues: React.Dispatch<React.SetStateAction<FormValues>>;
 }
 
-export function useDynamicForm(
-  fields: FormField[],
-  initialValues: FormValues = {}
-): UseDynamicFormReturn {
+export function useDynamicForm(fields: FormField[], initialValues: FormValues = {}): UseDynamicFormReturn {
   const generateInitialValues = (): FormValues => {
     const values: FormValues = {};
 
@@ -40,21 +28,15 @@ export function useDynamicForm(
     return values;
   };
 
-  const [values, setValues] = useState<FormValues>(
-    generateInitialValues
-  );
+  const [values, setValues] = useState<FormValues>(generateInitialValues);
 
 
 
-  const [errors, setErrors] =
-    useState<FormErrors>({});
+  const [errors, setErrors] = useState<FormErrors>({});
 
   // ONLY hydrate when edit data changes
   useEffect(() => {
-    if (
-      Object.keys(initialValues)
-        .length === 0
-    ) {
+    if (Object.keys(initialValues).length === 0) {
       return;
     }
 
@@ -64,10 +46,7 @@ export function useDynamicForm(
     }));
   }, [initialValues]);
 
-  const handleChange = (
-    name: string,
-    value: unknown
-  ) => {
+  const handleChange = (name: string, value: unknown) => {
     setValues((prev) => ({
       ...prev,
       [name]: value,

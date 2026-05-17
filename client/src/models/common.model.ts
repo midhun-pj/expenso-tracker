@@ -80,3 +80,48 @@ export interface ValidationRules {
     values: FormValues
   ) => string | null;
 }
+
+export interface ToggleButtonProps {
+  onChange: () => void;
+  label: string;
+  isActive: boolean;
+}
+
+export interface FilterDropdownProps {
+  filterValue: string;
+  filterOptions: FieldOption[];
+  defaultOption: string;
+  onChange: (value: string) => void;
+}
+
+export interface AddButtonProps {
+  onClick: () => void;
+  label: string;
+  mobileLabel: string;
+  buttonClasses?: string;
+}
+
+export interface FormFieldWrapperProps {
+  label: string;
+  required?: boolean;
+  error?: string;
+  children: React.ReactNode;
+}
+
+export interface SelectOption {
+  value: number;
+  label: string;
+}
+
+
+export interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: Pagination;
+}

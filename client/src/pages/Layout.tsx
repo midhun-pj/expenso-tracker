@@ -1,31 +1,26 @@
 
 import type { FC, ReactNode } from 'react';
-import { CreditCard, LayoutDashboard, LogOut, Settings, ShoppingBasket, UserCircle } from 'lucide-react';
+import { CreditCard, LayoutDashboard, LogOut, Settings, UserCircle } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
-import { useStore } from '../store/useStore';
-import { AppLogo } from '../components/AppLogo';
-import { NavItem, MobileNavItem } from '../components/NavItem';
-import strings from './nls/layout_strings.json';
+import { useStore } from '@store/useStore';
+import { AppLogo } from '@components/AppLogo';
+import { NavItem, MobileNavItem } from '@components/NavItem';
+import Strings from './nls/layout_strings.json';
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const menuItems = [
-  { path: '/', label: strings.menuDashboard, icon: LayoutDashboard },
-  { path: '/expenses', label: strings.menuExpenses, icon: CreditCard },
-  { path: '/grocery', label: strings.menuGrocery, icon: ShoppingBasket },
-  { path: '/accounts', label: strings.menuProducts, icon: ShoppingBasket },
-  { path: '/settings', label: strings.menuSettings, icon: Settings },
+  { path: '/', label: Strings.menuDashboard, icon: LayoutDashboard },
+  { path: '/transactions', label: Strings.menuTransactions, icon: CreditCard },
+  { path: '/settings', label: Strings.menuSettings, icon: Settings },
 ];
 
 const pageTitles: Record<string, { title: string; subtitle: string }> = {
-  '/': { title: strings.pageDashboardTitle, subtitle: strings.pageDashboardSubtitle },
-  '/expenses': { title: strings.pageExpensesTitle, subtitle: strings.pageExpensesSubtitle },
-  '/grocery': { title: strings.pageGroceryTitle, subtitle: strings.pageGrocerySubtitle },
-  '/grocery/add': { title: 'Track New Items', subtitle: 'Add new products to your price tracker' },
-  '/settings': { title: strings.pageSettingsTitle, subtitle: strings.pageSettingsSubtitle },
-  '/accounts': { title: strings.pageProductTitle, subtitle: strings.pageProductSubtitle },
+  '/': { title: Strings.pageDashboardTitle, subtitle: Strings.pageDashboardSubtitle },
+  '/transactions': { title: Strings.pageExpensesTitle, subtitle: Strings.pageExpensesSubtitle },
+  '/settings': { title: Strings.pageSettingsTitle, subtitle: Strings.pageSettingsSubtitle },
 };
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
@@ -33,8 +28,8 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
 
   const { title, subtitle } = pageTitles[location.pathname] ?? {
-    title: strings.pageDefaultTitle,
-    subtitle: strings.pageDefaultSubtitle,
+    title: Strings.pageDefaultTitle,
+    subtitle: Strings.pageDefaultSubtitle,
   };
 
   return (
@@ -43,7 +38,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
         <div className="p-6">
           <div className="flex items-center gap-3 mb-8">
             <AppLogo />
-            <span className="text-xl font-bold tracking-tight" style={{ color: theme?.buttonColor }}>{strings.appName}</span>
+            <span className="text-xl font-bold tracking-tight" style={{ color: theme?.primaryColor }}>{Strings.appName}</span>
           </div>
 
           <nav className="space-y-1">
@@ -53,7 +48,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
                 path={item.path}
                 label={item.label}
                 icon={item.icon}
-                activeColor={theme?.buttonColor}
+                activeColor={theme?.primaryColor}
                 textColor={theme?.textColor}
               />
             ))}
@@ -73,10 +68,10 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
           <button
             onClick={logout}
             className="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium hover:bg-red-50 rounded-lg transition-colors"
-            style={{ color: '#fff', backgroundColor: theme?.buttonColor }}
+            style={{ color: '#fff', backgroundColor: theme?.primaryColor }}
           >
             <LogOut className="w-4 h-4" />
-            {strings.signOut}
+            {Strings.signOut}
           </button>
         </div>
       </aside>
@@ -85,7 +80,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
       <div style={{ backgroundColor: theme?.navColor }} className="md:hidden fixed top-0 w-full border-b border-slate-200 z-20 px-4 py-3 flex justify-between items-center">
         <div className="flex items-center gap-2 text-indigo-600">
           <AppLogo size="sm" />
-          <span className="font-bold" style={{ color: theme?.buttonColor }}>{strings.appName}</span>
+          <span className="font-bold" style={{ color: theme?.primaryColor }}>{Strings.appName}</span>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
@@ -108,7 +103,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
             path={item.path}
             label={item.label}
             icon={item.icon}
-            activeColor={theme?.buttonColor}
+            activeColor={theme?.primaryColor}
             textColor={theme?.textColor}
           />
         ))}

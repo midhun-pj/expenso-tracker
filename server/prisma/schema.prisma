@@ -44,7 +44,7 @@ model Account {
   id      String      @id @default(cuid())
   name    String
   type    AccountType
-  balance Float       @default(0)
+  balance Decimal @default(0)
 
   isDeleted Boolean  @default(false)
 
@@ -109,7 +109,8 @@ model Config {
   themeName   String   @default("ocean")
   navColor    String   @default("#ffffff")
   textColor   String   @default("#0f172a")
-  buttonColor String   @default("#10b981")
+  primaryColor String   @default("#4f46e5")
+  successColor String   @default("#10b981")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

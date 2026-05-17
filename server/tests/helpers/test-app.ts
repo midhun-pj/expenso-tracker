@@ -9,7 +9,7 @@ import categoriesRoutes from '../../src/modules/categories/categories.routes'
 import transactionRoutes from '../../src/modules/transactions/transactions.routes'
 import dashboardRoutes from '../../src/modules/dashboard/dashboard.routes'
 import ledgerRoutes from '../../src/modules/ledger/ledger.routes'
-import configRoutes from '../../src/modules/config/config.routes'
+import configRoutes from '../../src/modules/settings/settings.routes'
 
 export async function buildTestApp() {
     const app = Fastify()

@@ -1,18 +1,11 @@
-import React from "react";
-
-interface Props {
-  label: string;
-  required?: boolean;
-  error?: string;
-  children: React.ReactNode;
-}
+import type { FormFieldWrapperProps } from "@models/common.model";
 
 export default function FormFieldWrapper({
   label,
   required,
   error,
   children,
-}: Props) {
+}: FormFieldWrapperProps) {
   return (
     <div>
       <label className="block text-sm font-medium text-slate-700 mb-1">

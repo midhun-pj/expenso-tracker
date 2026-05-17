@@ -1,21 +1,9 @@
 
-
-export type CategoryType = 'INCOME' | 'EXPENSE';
-
-export interface Category {
-    id: string;
-    name: string;
-    type: CategoryType;
-    userId: string;
-    createdAt: string;
-}
-
 export const COMMON_CURRENCIES = ['$', '€', '£', '₹', '¥', 'R', 'kr', 'AED', '₱'];
 
-
-export const THEME_PRESETS = [
+export const THEME_PRESETS: ThemeConfig[] = [
     {
-        name: 'ocean',
+        themeName: 'ocean',
         label: 'Ocean Blue',
         description: 'Cool and professional',
         primaryColor: '#4f46e5',
@@ -24,7 +12,7 @@ export const THEME_PRESETS = [
         textColor: '#0f172a',
     },
     {
-        name: 'sunset',
+        themeName: 'sunset',
         label: 'Sunset Orange',
         description: 'Warm and energetic',
         primaryColor: '#ea580c',
@@ -33,7 +21,7 @@ export const THEME_PRESETS = [
         textColor: '#1c1917',
     },
     {
-        name: 'forest',
+        themeName: 'forest',
         label: 'Forest Green',
         description: 'Natural and calm',
         primaryColor: '#059669',
@@ -43,4 +31,42 @@ export const THEME_PRESETS = [
     },
 ] as const;
 
-export type ThemeName = typeof THEME_PRESETS[number]['name'];
+export type ThemeName = typeof THEME_PRESETS[number]['themeName'];
+
+export interface ThemeConfig {
+    themeName: string
+    navColor: string
+    textColor: string
+    primaryColor: string
+    successColor?: string
+    label?: string
+    description?: string
+}
+
+export interface Config {
+    userId?: string
+    id?: string
+    createdAt?: Date
+    updatedAt?: Date
+    currency: string
+    themeConfig: ThemeConfig
+}
+
+
+export const DEFAULT_CURRENCY = '$';
+export const DEFAULT_THEME: ThemeConfig = {
+    themeName: 'ocean',
+    label: 'Ocean Blue',
+    description: 'Cool and professional',
+    primaryColor: '#4f46e5',
+    successColor: '#10b981',
+    navColor: '#ffffff',
+    textColor: '#0f172a',
+};
+
+export type SettingsFormProps = {
+    currency: string;
+    theme: ThemeConfig;
+    setConfig: (cfg: Config) => Promise<{ success: boolean }>;
+    setTheme: (themeName: string) => void;
+};

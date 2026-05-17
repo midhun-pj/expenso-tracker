@@ -1,9 +1,6 @@
-import FormFieldWrapper from "./FormFieldWrapper";
+import FormFieldWrapper from "@components/common/FormFieldWrapper";
 
-import type {
-  BaseInputProps,
-  SelectField,
-} from "../../models/common.model";
+import type { BaseInputProps, SelectField } from "@models/common.model";
 
 interface Props extends BaseInputProps {
   field: SelectField;

@@ -313,3 +313,9 @@
 .shadow-success {
     box-shadow: 0 10px 15px -3px var(--color-success-200);
 }
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

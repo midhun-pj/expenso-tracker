@@ -19,6 +19,7 @@ export interface Account extends AccountBase {
     id: string;
     userId?: string;
     createdAt?: string;
+    balance?: number;
 }
 
 
@@ -26,9 +27,9 @@ export interface Account extends AccountBase {
 export type AccountsFormProps = {
     accounts: Account[];
 
-    createAccount: (data: Omit<Account, 'id'>) => Promise<void>;
+    createAccount: (data: AccountBase) => Promise<void>;
 
-    deleteAccount: (id: string) => Promise<void>;
+    removeAccount: (id: string) => Promise<void>;
 
     currency: string;
 };

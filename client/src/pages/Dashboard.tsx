@@ -1,16 +1,19 @@
 import type { FC } from 'react';
 import { ArrowDownRight, ArrowUpRight, DollarSign, TrendingUp } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
-import { useStore } from '../store/useStore';
-import { useDashboardFilters } from '../hooks/useDashboardFilters';
-import { generateDistinctColors } from '../utils/chartHelpers';
-import { SummaryCard } from '../components/SummaryCard';
-import { FilterBar } from '../components/FilterBar';
-import strings from './nls/dashboard_strings.json';
+import { useStore } from '@store/useStore';
+
+import { useDashboardFilters } from '@hooks/useDashboardFilters';
+
+import { SummaryCard } from '@components/common/SummaryCard';
+import FilterDropdown from '@components/common/FilterDropdown';
+import { List } from '@components/common/List';
+
+import type { Account } from '@models/account.model';
+import Strings from './nls/dashboard_strings.json';
 
 export const Dashboard: FC = () => {
-  const { currency, theme, expenseSummary } = useStore();
+  const { currency, dashboardSummary } = useStore();
   const {
     filterMonth,
     filterYear,
@@ -20,47 +23,59 @@ export const Dashboard: FC = () => {
     yearOptions,
   } = useDashboardFilters();
 
-  const totalIncome = expenseSummary?.totalIncome || 0;
-  const totalSpent = expenseSummary?.totalExpenses || 0;
-  const netBalance = totalIncome - totalSpent;
+  const totalIncome = dashboardSummary?.summary.totalIncome || 0;
+  const totalSpent = dashboardSummary?.summary.totalExpense || 0;
+  const netBalance = dashboardSummary?.totalBalance || 0;
 
-  const pieData = (expenseSummary?.expenseDistribution || []).map(item => ({
-    name: item.category_name,
-    value: item.total,
-  }));
+  const accounts = dashboardSummary?.accounts || [];
 
-  const barData = (expenseSummary?.monthlyData || []).map(item => {
-    const monthName = new Date(2000, parseInt(item.month) - 1, 1).toLocaleDateString('en-US', { month: 'short' });
-    return {
-      name: monthName,
-      amt: item.expense,
-    };
-  });
+  const listAccounts = {
+    headers: [
+      {
+        key: "name",
+        label: "Name",
+      },
+      {
+        key: "type",
+        label: "Type",
+      },
+      {
+        key: "balance",
+        label: "Balance",
+      },
+    ],
+    rows: accounts.map((account: Account) => ({
+      id: account.id,
+      name: account.name,
+      type: account.type,
+      balance: `${currency}${Number(account?.balance || 0).toFixed(2)}`,
+    })),
+  };
+
+
+
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <FilterBar
-        filters={[
-          {
-            value: filterYear,
-            onChange: setFilterYear,
-            options: yearOptions,
-            placeholder: strings.allYears,
-            minWidth: '120px',
-          },
-          {
-            value: filterMonth,
-            onChange: setFilterMonth,
-            options: monthOptions,
-            placeholder: strings.allMonths,
-            minWidth: '140px',
-          },
-        ]}
-      />
+      <section className='flex items-center gap-3 flex-wrap bg-white p-4 rounded-2xl shadow-sm border border-slate-100'>
+        <FilterDropdown
+          filterValue={String(filterYear)}
+          filterOptions={yearOptions}
+          defaultOption={Strings.allYears}
+          onChange={(value) => setFilterYear(+value)}
+        />
+
+        <FilterDropdown
+          filterValue={String(filterMonth)}
+          filterOptions={monthOptions}
+          defaultOption={Strings.allMonths}
+          onChange={(value) => setFilterMonth(+value)}
+        />
+      </section>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <SummaryCard
-          title={strings.totalIncome}
+          title={Strings.totalIncome}
           value={`${currency}${totalIncome.toFixed(2)}`}
           icon={
             <div className="bg-primary-50 p-4 rounded-xl">
@@ -70,13 +85,13 @@ export const Dashboard: FC = () => {
         >
           {totalIncome > 0 && (
             <span className="inline-flex items-center text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full mt-2">
-              <ArrowUpRight className="w-3 h-3 mr-1" /> {strings.incomeBadge}
+              <ArrowUpRight className="w-3 h-3 mr-1" /> {Strings.incomeBadge}
             </span>
           )}
         </SummaryCard>
 
         <SummaryCard
-          title={strings.totalSpent}
+          title={Strings.totalSpent}
           value={`${currency}${totalSpent.toFixed(2)}`}
           icon={
             <div className="bg-pink-50 p-4 rounded-xl">
@@ -85,12 +100,12 @@ export const Dashboard: FC = () => {
           }
         >
           <span className="inline-flex items-center text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full mt-2">
-            <ArrowDownRight className="w-3 h-3 mr-1" /> {strings.expenseBadge}
+            <ArrowDownRight className="w-3 h-3 mr-1" /> {Strings.expenseBadge}
           </span>
         </SummaryCard>
 
         <SummaryCard
-          title={strings.netBalance}
+          title={Strings.netBalance}
           value={`${netBalance >= 0 ? '+' : '-'}${currency}${Math.abs(netBalance).toFixed(2)}`}
           icon={
             <div className="bg-success-50 p-4 rounded-xl">
@@ -106,61 +121,8 @@ export const Dashboard: FC = () => {
         </SummaryCard>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h3 className="text-lg font-bold text-slate-800 mb-6">{strings.expenseDistribution}</h3>
-          <div className="h-64" style={{ height: '16rem', width: '100%' }}>
-            {pieData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {pieData.map((_, index) => {
-                      const colors = generateDistinctColors(pieData.length);
-                      return <Cell key={`cell-${index}`} fill={colors[index]} />;
-                    })}
-                  </Pie>
-                  <Tooltip formatter={(value) => `${currency}${value}`} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-full text-slate-400">
-                {strings.noExpenseData}
-              </div>
-            )}
-          </div>
-        </div>
+      <List list={listAccounts} />
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h3 className="text-lg font-bold text-slate-800 mb-6">{strings.monthlyTrends}</h3>
-          <div className="h-64">
-            {barData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={barData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                  <YAxis axisLine={false} tickLine={false} />
-                  <Tooltip cursor={{ fill: '#f1f5f9' }} formatter={(value) => `${currency}${Number(value).toFixed(2)}`} />
-                  <Bar dataKey="amt" fill={theme?.buttonColor || '#4f46e5'} radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-full text-slate-400">
-                {strings.noMonthlyData}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

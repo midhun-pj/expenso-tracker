@@ -1,10 +1,12 @@
 import type { FC } from 'react';
-import { useState } from 'react';
-import { Plus, Settings as SettingsIcon, X } from 'lucide-react';
-import { type CategoryType, type Category } from '../../models/settings.model';
+import { Settings as SettingsIcon, X } from 'lucide-react';
+
+import type { CategoryType, Category } from '@models/category.model';
+import type { FormField } from '@models/common.model';
+
+import DynamicForm from '@components/common/DynamicForm';
+
 import Strings from './nls/category_form.json'
-import DynamicForm from '../common/DynamicForm';
-import type { FormField } from '../../models/common.model';
 
 type CategoryFormProps = {
     categories: Category[];

@@ -14,7 +14,7 @@ import accountsRoutes from './modules/accounts/accounts.routes'
 import transactionRoutes from './modules/transactions/transactions.routes'
 import dashboardRoutes from './modules/dashboard/dashboard.routes'
 import categoriesRoutes from './modules/categories/categories.routes'
-import configRoutes from './modules/config/config.routes'
+import settingsRoutes from './modules/settings/settings.routes'
 
 export const app = Fastify({
     logger: true,
@@ -66,7 +66,7 @@ async function registerPlugins() {
         prefix: '/api/v1/categories',
     })
 
-    app.register(configRoutes, {
+    app.register(settingsRoutes, {
         prefix: '/api/v1/config',
     })
 }

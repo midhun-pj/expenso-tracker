@@ -1,12 +1,6 @@
-import {
-    FastifyReply,
-    FastifyRequest,
-} from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 
-import {
-    createAccountSchema,
-    updateAccountSchema,
-} from './accounts.schema'
+import { createAccountSchema, updateAccountSchema } from './accounts.schema'
 
 import {
     createAccountService,
@@ -16,10 +10,7 @@ import {
     deleteAccountService,
 } from './accounts.service'
 
-export async function createAccount(
-    request: FastifyRequest,
-    reply: FastifyReply
-) {
+export async function createAccount(request: FastifyRequest, reply: FastifyReply) {
     const body = createAccountSchema.parse(request.body)
 
     const user = request.user as any
@@ -33,10 +24,7 @@ export async function createAccount(
     return reply.code(201).send(account)
 }
 
-export async function getAccounts(
-    request: FastifyRequest,
-    reply: FastifyReply
-) {
+export async function getAccounts(request: FastifyRequest, reply: FastifyReply) {
     const user = request.user as any
 
     const accounts = await getAccountsService(
@@ -48,11 +36,7 @@ export async function getAccounts(
 }
 
 export async function getAccountById(
-    request: FastifyRequest<{
-        Params: {
-            id: string
-        }
-    }>,
+    request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply
 ) {
     const user = request.user as any
@@ -73,11 +57,7 @@ export async function getAccountById(
 }
 
 export async function updateAccount(
-    request: FastifyRequest<{
-        Params: {
-            id: string
-        }
-    }>,
+    request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply
 ) {
     const body = updateAccountSchema.parse(request.body)
@@ -104,11 +84,7 @@ export async function updateAccount(
 
 
 export async function deleteAccount(
-    request: FastifyRequest<{
-        Params: {
-            id: string
-        }
-    }>,
+    request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply
 ) {
     const user = request.user as any

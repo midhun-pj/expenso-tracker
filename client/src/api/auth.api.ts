@@ -1,5 +1,5 @@
-import { API_BASE } from "../utils/app.constant";
-import { handleResponse } from "../utils/app.methods";
+import { API_BASE } from "@utils/app.constant";
+import { handleResponse } from "@utils/app.methods";
 
 // Authentication
 export async function login(email: string, password: string): Promise<{ token: string }> {

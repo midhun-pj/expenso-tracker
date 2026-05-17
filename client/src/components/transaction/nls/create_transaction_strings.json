@@ -1,0 +1,10 @@
+{
+    "titleEdit": "Edit Transaction",
+    "titleAdd": "Create new transaction",
+    "description": "Description",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "account": "Account",
+    "submitButtonLabel": "Create"
+}

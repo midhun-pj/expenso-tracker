@@ -1,35 +1,21 @@
 import { FastifyInstance } from 'fastify'
 
 import {
-    createExpense,
+    createTransaction,
     createTransfer,
     getTransactions,
+    updateTransaction,
+    deleteTransaction
 } from './transactions.controller'
 
-export default async function transactionRoutes(
-    fastify: FastifyInstance
-) {
-    fastify.post(
-        '/expense',
-        {
-            preHandler: [fastify.authenticate],
-        },
-        createExpense
-    )
+export default async function transactionRoutes(fastify: FastifyInstance) {
 
-    fastify.post(
-        '/transfer',
-        {
-            preHandler: [fastify.authenticate],
-        },
-        createTransfer
-    )
+    fastify.post('/', { preHandler: [fastify.authenticate], }, createTransaction)
 
-    fastify.get(
-        '/',
-        {
-            preHandler: [fastify.authenticate],
-        },
-        getTransactions
-    )
+    fastify.post('/transfer', { preHandler: [fastify.authenticate], }, createTransfer)
+
+    fastify.put('/:id', { preHandler: [fastify.authenticate], }, updateTransaction)
+    fastify.delete('/:id', { preHandler: [fastify.authenticate], }, deleteTransaction)
+
+    fastify.get('/', { preHandler: [fastify.authenticate], }, getTransactions)
 }

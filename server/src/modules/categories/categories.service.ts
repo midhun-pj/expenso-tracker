@@ -1,11 +1,12 @@
 import { PrismaClient } from '@prisma/client'
+import { TransactionCategoryType } from '@models/common.model'
 
 export async function createCategoryService(
     prisma: PrismaClient,
     userId: string,
     categoryData: {
         name: string
-        type: 'EXPENSE' | 'INCOME'
+        type: TransactionCategoryType
     }
 ) {
     return prisma.category.create({

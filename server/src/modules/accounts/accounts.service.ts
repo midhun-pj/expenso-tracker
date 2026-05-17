@@ -1,3 +1,4 @@
+import { AccounntRequestPayload } from '@models/account.model'
 import {
     PrismaClient,
     AccountType,
@@ -6,11 +7,7 @@ import {
 export async function createAccountService(
     prisma: PrismaClient,
     userId: string,
-    data: {
-        name: string
-        type: AccountType
-        initialBalance?: number
-    }
+    data: AccounntRequestPayload
 ) {
     return prisma.account.create({
         data: {

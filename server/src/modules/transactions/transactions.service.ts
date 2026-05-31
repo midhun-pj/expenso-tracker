@@ -219,7 +219,11 @@ export async function getTransactionsService(
     }
 
     if (accountId) {
-        where.accountId = accountId
+        where.entries = {
+            some: {
+                accountId,
+            },
+        }
     }
 
     if (search) {
@@ -229,7 +233,7 @@ export async function getTransactionsService(
     }
 
     const [
-        transactions,
+        rawTransactions,
         total,
     ] = await prisma.$transaction([
         prisma.transaction.findMany({
@@ -251,7 +255,6 @@ export async function getTransactionsService(
                                 id: true,
                                 name: true,
                                 type: true,
-                                balance: true,
                             },
                         },
                     },
@@ -272,8 +275,19 @@ export async function getTransactionsService(
         }),
     ])
 
-
-
+    // Transform: replace entries with a flat accounts array
+    const transactions = rawTransactions.map((tx) => {
+        const { entries, ...rest } = tx
+        return {
+            ...rest,
+            accounts: entries.map((entry) => ({
+                id: entry.account.id,
+                name: entry.account.name,
+                type: entry.account.type,
+                entryType: entry.type, // DEBIT or CREDIT
+            })),
+        }
+    })
 
     return {
         data: transactions,

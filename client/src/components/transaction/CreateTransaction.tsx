@@ -20,13 +20,14 @@ export const CreateTransaction: FC<any> = ({
 
     let initialValues = {
         type: "EXPENSE",
+        date: formatDateForInput(new Date())
     }
 
     if (editingTransaction?.id) {
         initialValues = {
             ...editingTransaction,
             date: formatDateForInput(editingTransaction?.date),
-            accountId: editingTransaction?.entries[0].accountId,
+            accountId: editingTransaction?.accounts?.[0]?.id,
         };
     }
 
@@ -133,11 +134,7 @@ export const CreateTransaction: FC<any> = ({
                     <DynamicForm
                         fields={fields}
                         submitLabel={editingTransaction?.id ? Strings.updateButtonLabel : Strings.submitButtonLabel}
-                        initialValues={
-                            editingTransaction?.id ? initialValues : {
-                                type: "EXPENSE",
-                            }
-                        }
+                        initialValues={initialValues}
                         resetOnSubmit={true}
                         onSubmit={(values: any) => {
                             if (editingTransaction?.id) {

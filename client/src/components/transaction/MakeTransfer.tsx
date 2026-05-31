@@ -9,6 +9,8 @@ import type { FormField } from "@models/common.model";
 import type { Account } from "@models/account.model";
 import type { CreateTransferRequest } from "@models/transaction.model";
 
+import { formatDateForInput } from "@utils/app.methods";
+
 export const MakeTransfer: FC<any> = ({ setOpenTransferModal, accounts, createTransfer }) => {
   const fields: FormField[] = [
     {
@@ -84,6 +86,7 @@ export const MakeTransfer: FC<any> = ({ setOpenTransferModal, accounts, createTr
           <DynamicForm
             fields={fields}
             submitLabel={Strings.submitButtonLabel}
+            initialValues={{ date: formatDateForInput(new Date()) }}
             resetOnSubmit={true}
             onSubmit={(values: unknown) => {
               createTransfer(values as CreateTransferRequest)

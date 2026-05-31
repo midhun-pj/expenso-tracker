@@ -2,6 +2,7 @@
   "date": "Date",
   "description": "Description",
   "category": "Category",
+  "account": "Account",
   "amount": "Amount",
   "actions": "Actions",
   "loadingTransactions": "Loading transactions..."

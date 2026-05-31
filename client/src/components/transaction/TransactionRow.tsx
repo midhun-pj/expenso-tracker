@@ -15,6 +15,25 @@ export const TransactionRow: React.FC<TransactionRowProps> = ({
   onEdit,
 }) => {
 
+  const isTransfer = transaction.type === 'TRANSFER';
+
+  /**
+   * Build the account display string.
+   * - EXPENSE / INCOME: show the single account name
+   * - TRANSFER: show "FromAccount → ToAccount"
+   */
+  const getAccountDisplay = () => {
+    if (!transaction.accounts || transaction.accounts.length === 0) return '—';
+
+    if (isTransfer) {
+      const from = transaction.accounts.find((a) => a.entryType === 'CREDIT');
+      const to = transaction.accounts.find((a) => a.entryType === 'DEBIT');
+      return `${from?.name ?? '?'} → ${to?.name ?? '?'}`;
+    }
+
+    return transaction.accounts[0]?.name ?? '—';
+  };
+
   return (
     <tr className="hover:bg-slate-50 transition-colors group">
       <td className="px-4 md:px-6 py-4 whitespace-nowrap hidden sm:table-cell">
@@ -34,12 +53,20 @@ export const TransactionRow: React.FC<TransactionRowProps> = ({
         </span>
       </td>
 
+      <td className={`px-4 md:px-6 py-4 hidden md:table-cell`}>
+        <span className="text-xs text-slate-600">
+          {getAccountDisplay()}
+        </span>
+      </td>
+
       <td className="px-4 md:px-6 py-4 text-right font-semibold text-slate-800">
         <span
           className={
             transaction.type === "INCOME"
               ? "text-emerald-600"
-              : "text-rose-600"
+              : transaction.type === "TRANSFER"
+                ? "text-blue-600"
+                : "text-rose-600"
           }
         >
           {formatCurrency(currency, transaction.amount)}
@@ -48,13 +75,15 @@ export const TransactionRow: React.FC<TransactionRowProps> = ({
 
       <td className="px-4 md:px-6 py-4 text-center">
         <div className="flex items-center justify-center gap-2">
-          <button
-            onClick={() => onEdit(transaction)}
-            className="text-slate-400 transition-colors p-1" style={{ color: 'var(--color-primary-600)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-primary-600)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-neutral-400)'}
-            title="Edit expense"
-          >
-            <Pencil className="h-4 w-4" />
-          </button>
+          {!isTransfer && (
+            <button
+              onClick={() => onEdit(transaction)}
+              className="text-slate-400 transition-colors p-1" style={{ color: 'var(--color-primary-600)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-primary-600)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-neutral-400)'}
+              title="Edit transaction"
+            >
+              <Pencil className="h-4 w-4" />
+            </button>
+          )}
         </div>
       </td>
     </tr>

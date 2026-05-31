@@ -1,4 +1,4 @@
-import type { Account } from "./account.model";
+import type { Account, AccountType } from "./account.model";
 import { CATEGORY_TYPES, type Category } from "./category.model";
 
 export type UpdateTransactionDetailsRequest = {
@@ -6,15 +6,23 @@ export type UpdateTransactionDetailsRequest = {
   date?: string;
 };
 
+export type TransactionAccount = {
+  id: string;
+  name: string;
+  type: AccountType;
+  entryType: 'DEBIT' | 'CREDIT';
+};
+
 export type Transaction = {
   id?: string;
-  accountId: string;
+  accountId?: string;
   amount: number;
   description?: string;
   date: string;
   type: TransactionType;
-  categoryId: string;
-  category: Category;
+  categoryId?: string;
+  category?: Category;
+  accounts?: TransactionAccount[];
 };
 
 export type AddExpenseFormProps = {

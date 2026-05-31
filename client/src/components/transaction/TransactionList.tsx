@@ -22,7 +22,7 @@ export default function TransactionList({
 
   const filteredTransactions = transactions?.filter((transaction: Transaction) => {
     if (type === 'ALL') {
-      return transaction.type !== 'TRANSFER';
+      return true;
     }
     return transaction.type === type;
   });
@@ -46,6 +46,9 @@ export default function TransactionList({
               <th className="px-4 md:px-6 py-4">{Strings.description}</th>
               <th className={`px-4 md:px-6 py-4 hidden md:table-cell`}>
                 {Strings.category}
+              </th>
+              <th className={`px-4 md:px-6 py-4 hidden md:table-cell`}>
+                {Strings.account}
               </th>
               <th className="px-4 md:px-6 py-4 text-right">{Strings.amount}</th>
               <th className="px-4 md:px-6 py-4 text-center">

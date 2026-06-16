@@ -49,3 +49,20 @@ export async function updateTransactionDetails(id: string, data: { description?:
     });
     return (await handleResponse(res)) as Transaction;
 }
+
+export async function updateTransaction(id: string, data: Transaction): Promise<Transaction> {
+    const res = await fetch(`${apiUrl}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
+        body: JSON.stringify(data),
+    });
+    return (await handleResponse(res)) as Transaction;
+}
+
+export async function deleteTransaction(id: string): Promise<void> {
+    const res = await fetch(`${apiUrl}/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders(),
+    });
+    await handleResponse(res);
+}

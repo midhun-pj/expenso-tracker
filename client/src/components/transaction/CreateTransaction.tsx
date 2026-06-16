@@ -15,7 +15,8 @@ import { formatDateForInput } from "@utils/app.methods";
 export const CreateTransaction: FC<any> = ({
     setIsModalOpen, accounts, categories,
     createTransaction, editingTransaction,
-    updateTransactionDetails
+    updateTransactionDetails,
+    updateTransaction
 }) => {
 
     let initialValues = {
@@ -31,7 +32,7 @@ export const CreateTransaction: FC<any> = ({
         };
     }
 
-    const nonEditableFields = ["amount", "type", "categoryId", "accountId"];
+    const nonEditableFields = ["type", "categoryId", "accountId"];
 
 
     const fields = (values: FormValues): FormField[] => {
@@ -58,7 +59,6 @@ export const CreateTransaction: FC<any> = ({
                     required: true,
                     min: 1,
                 },
-                disabled: editingTransaction?.id && nonEditableFields.includes("amount"),
             },
             {
                 name: 'type',
@@ -138,9 +138,13 @@ export const CreateTransaction: FC<any> = ({
                         resetOnSubmit={true}
                         onSubmit={(values: any) => {
                             if (editingTransaction?.id) {
-                                updateTransactionDetails(editingTransaction.id, {
+                                updateTransaction(editingTransaction.id, {
                                     description: values?.description,
                                     date: new Date(values.date).toISOString(),
+                                    amount: values?.amount,
+                                    type: values?.type,
+                                    categoryId: values?.categoryId,
+                                    accountId: values?.accountId,
                                 });
                             } else {
                                 createTransaction(values);

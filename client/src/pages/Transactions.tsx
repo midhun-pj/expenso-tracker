@@ -34,6 +34,8 @@ export const Transactions: FC = () => {
     createTransfer,
     getTransactions,
     updateTransactionDetails,
+    updateTransaction,
+    deleteTransaction
   } = useStore();
 
   // Filter State
@@ -178,18 +180,19 @@ export const Transactions: FC = () => {
         loading={loading}
         type={filterType}
         onEdit={openEditModal}
+        onDelete={deleteTransaction}
       />
 
       {transactions?.pagination?.totalPages >
         transactions?.pagination?.page && (
-        <button
-          onClick={() => loadMoreTransactions()}
-          disabled={loading}
-          className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 disabled:opacity-60 transition-colors text-sm font-medium"
-        >
-          {Strings.loadMore}
-        </button>
-      )}
+          <button
+            onClick={() => loadMoreTransactions()}
+            disabled={loading}
+            className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 disabled:opacity-60 transition-colors text-sm font-medium"
+          >
+            {Strings.loadMore}
+          </button>
+        )}
 
       {isModalOpen && (
         <CreateTransaction
@@ -199,6 +202,7 @@ export const Transactions: FC = () => {
           createTransaction={createTransaction}
           editingTransaction={editingTransaction}
           updateTransactionDetails={updateTransactionDetails}
+          updateTransaction={updateTransaction}
         />
       )}
 

@@ -341,6 +341,35 @@ export async function updateTransactionService(
     }
 
     return prisma.$transaction(async (tx) => {
+        // Fetch the old transaction to reverse its effects
+        const oldTransaction = await tx.transaction.findUnique({
+            where: { id: expense.id },
+            include: { entries: true },
+        })
+
+        if (!oldTransaction) {
+            throw new Error('Transaction not found')
+        }
+
+        if (oldTransaction.userId !== userId) {
+            throw new Error('Transaction does not belong to this user')
+        }
+
+        // Reverse the old balances
+        for (const entry of oldTransaction.entries) {
+            if (entry.type === 'DEBIT') {
+                await tx.account.update({
+                    where: { id: entry.accountId },
+                    data: { balance: { decrement: entry.amount } },
+                })
+            } else if (entry.type === 'CREDIT') {
+                await tx.account.update({
+                    where: { id: entry.accountId },
+                    data: { balance: { increment: entry.amount } },
+                })
+            }
+        }
+
         const transaction = await tx.transaction.update({
             where: { id: expense.id },
             data: {
@@ -404,6 +433,7 @@ export async function deleteTransactionService(
     return prisma.$transaction(async (tx) => {
         const transaction = await tx.transaction.findUnique({
             where: { id },
+            include: { entries: true },
         })
 
         if (!transaction) {
@@ -412,6 +442,21 @@ export async function deleteTransactionService(
 
         if (transaction.userId !== userId) {
             throw new Error('Transaction does not belong to this user')
+        }
+
+        // Reverse the balances
+        for (const entry of transaction.entries) {
+            if (entry.type === 'DEBIT') {
+                await tx.account.update({
+                    where: { id: entry.accountId },
+                    data: { balance: { decrement: entry.amount } },
+                })
+            } else if (entry.type === 'CREDIT') {
+                await tx.account.update({
+                    where: { id: entry.accountId },
+                    data: { balance: { increment: entry.amount } },
+                })
+            }
         }
 
         await tx.transactionEntry.deleteMany({

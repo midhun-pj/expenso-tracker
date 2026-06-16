@@ -292,12 +292,12 @@ export const useStore = create<AppState>((set) => {
           transactions:
             append && state.transactions
               ? {
-                  data: [
-                    ...(state.transactions.data || []),
-                    ...transactions.data,
-                  ],
-                  pagination: transactions.pagination,
-                }
+                data: [
+                  ...(state.transactions.data || []),
+                  ...transactions.data,
+                ],
+                pagination: transactions.pagination,
+              }
               : transactions,
         }));
       } catch (err) {
@@ -314,6 +314,26 @@ export const useStore = create<AppState>((set) => {
         await state.getTransactions(DEFAULT_FILTER_PARAMS);
       } catch (err) {
         console.error("updateTransactionDetails failed", err);
+        throw err;
+      }
+    },
+
+    updateTransaction: async (id: string, data: Transaction) => {
+      try {
+        await transactionApi.updateTransaction(id, data);
+        await state.getTransactions(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("updateTransaction failed", err);
+        throw err;
+      }
+    },
+
+    deleteTransaction: async (id: string) => {
+      try {
+        await transactionApi.deleteTransaction(id);
+        await state.getTransactions(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("deleteTransaction failed", err);
         throw err;
       }
     },

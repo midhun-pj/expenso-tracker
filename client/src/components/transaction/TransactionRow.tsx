@@ -1,27 +1,24 @@
 import React from "react";
 import type { Transaction } from "@models/transaction.model";
 import { formatCurrency } from "@utils/app.methods";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash } from "lucide-react";
 
 type TransactionRowProps = {
   currency: string;
   transaction: Transaction;
   onEdit: (transaction: Transaction) => void;
+  onDelete: (id: string) => void;
 }
 
 export const TransactionRow: React.FC<TransactionRowProps> = ({
   currency,
   transaction,
   onEdit,
+  onDelete
 }) => {
 
   const isTransfer = transaction.type === 'TRANSFER';
 
-  /**
-   * Build the account display string.
-   * - EXPENSE / INCOME: show the single account name
-   * - TRANSFER: show "FromAccount → ToAccount"
-   */
   const getAccountDisplay = () => {
     if (!transaction.accounts || transaction.accounts.length === 0) return '—';
 
@@ -84,6 +81,16 @@ export const TransactionRow: React.FC<TransactionRowProps> = ({
               <Pencil className="h-4 w-4" />
             </button>
           )}
+          <button
+            onClick={() => onDelete(transaction.id)}
+            className="text-slate-400 transition-colors p-1"
+            style={{ color: 'var(--color-error-600)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-error-600)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-error-600)'}
+            title="Delete transaction"
+          >
+            <Trash className="h-4 w-4" />
+          </button>
         </div>
       </td>
     </tr>

@@ -10,6 +10,7 @@ type Props = {
   loading: boolean;
   type: TransactionFilterType;
   onEdit: (transaction: Transaction) => void;
+  onDelete: (id: string) => void;
 };
 
 export default function TransactionList({
@@ -18,6 +19,7 @@ export default function TransactionList({
   transactions,
   type,
   onEdit,
+  onDelete,
 }: Props) {
 
   const filteredTransactions = transactions?.filter((transaction: Transaction) => {
@@ -64,6 +66,7 @@ export default function TransactionList({
                 transaction={transaction}
                 currency={currency}
                 onEdit={onEdit}
+                onDelete={onDelete}
               />
             ))}
           </tbody>

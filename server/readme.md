@@ -12,7 +12,11 @@ This directory contains the backend server for the **Expenso Tracker** applicati
    pnpm install
    ```
 
-2.
+2. **Setup primsa**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
 
 3. **Start the development environment**
    ```bash

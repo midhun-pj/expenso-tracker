@@ -4,6 +4,7 @@ import {
     register,
     login,
     me,
+    deleteUser,
 } from './auth.controller'
 
 export default async function authRoutes(
@@ -19,5 +20,13 @@ export default async function authRoutes(
             preHandler: [fastify.authenticate],
         },
         me
+    )
+
+    fastify.delete(
+        '/me',
+        {
+            preHandler: [fastify.authenticate],
+        },
+        deleteUser
     )
 }

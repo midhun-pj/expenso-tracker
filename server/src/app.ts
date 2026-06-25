@@ -15,6 +15,9 @@ import transactionRoutes from './modules/transactions/transactions.routes'
 import dashboardRoutes from './modules/dashboard/dashboard.routes'
 import categoriesRoutes from './modules/categories/categories.routes'
 import settingsRoutes from './modules/settings/settings.routes'
+import productsRoutes from './modules/products/products.routes'
+import supermarketsRoutes from './modules/supermarkets/supermarkets.routes'
+import groceryItemsRoutes from './modules/grocery-items/grocery-items.routes'
 
 export const app = Fastify({
     logger: true,
@@ -68,6 +71,18 @@ async function registerPlugins() {
 
     app.register(settingsRoutes, {
         prefix: '/api/v1/config',
+    })
+
+    app.register(productsRoutes, {
+        prefix: '/api/v1/products',
+    })
+
+    app.register(supermarketsRoutes, {
+        prefix: '/api/v1/supermarkets',
+    })
+
+    app.register(groceryItemsRoutes, {
+        prefix: '/api/v1/grocery-items',
     })
 }
 

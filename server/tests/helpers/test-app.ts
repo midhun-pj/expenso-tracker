@@ -10,6 +10,9 @@ import transactionRoutes from '../../src/modules/transactions/transactions.route
 import dashboardRoutes from '../../src/modules/dashboard/dashboard.routes'
 import ledgerRoutes from '../../src/modules/ledger/ledger.routes'
 import configRoutes from '../../src/modules/settings/settings.routes'
+import productsRoutes from '../../src/modules/products/products.routes'
+import supermarketsRoutes from '../../src/modules/supermarkets/supermarkets.routes'
+import groceryItemsRoutes from '../../src/modules/grocery-items/grocery-items.routes'
 
 export async function buildTestApp() {
     const app = Fastify()
@@ -57,6 +60,18 @@ export async function buildTestApp() {
 
     await app.register(configRoutes, {
         prefix: '/api/config',
+    })
+
+    await app.register(productsRoutes, {
+        prefix: '/api/products',
+    })
+
+    await app.register(supermarketsRoutes, {
+        prefix: '/api/supermarkets',
+    })
+
+    await app.register(groceryItemsRoutes, {
+        prefix: '/api/grocery-items',
     })
 
     return app

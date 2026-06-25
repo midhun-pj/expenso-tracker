@@ -15,7 +15,6 @@ import { formatDateForInput } from "@utils/app.methods";
 export const CreateTransaction: FC<any> = ({
     setIsModalOpen, accounts, categories,
     createTransaction, editingTransaction,
-    updateTransactionDetails,
     updateTransaction
 }) => {
 

@@ -101,7 +101,7 @@ export const Transactions: FC = () => {
         year: filterYear,
         ...(filterCategory && { categoryId: filterCategory }),
         ...(filterType !== "ALL" && { type: filterType }),
-        page: transactions?.pagination?.page + 1,
+        page: (transactions?.pagination?.page || 0) + 1,
       },
       true,
     );
@@ -183,8 +183,8 @@ export const Transactions: FC = () => {
         onDelete={deleteTransaction}
       />
 
-      {transactions?.pagination?.totalPages >
-        transactions?.pagination?.page && (
+      {(transactions?.pagination?.totalPages || 0) >
+        (transactions?.pagination?.page || 0) && (
           <button
             onClick={() => loadMoreTransactions()}
             disabled={loading}

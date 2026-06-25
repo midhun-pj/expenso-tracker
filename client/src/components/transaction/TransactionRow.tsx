@@ -82,7 +82,7 @@ export const TransactionRow: React.FC<TransactionRowProps> = ({
             </button>
           )}
           <button
-            onClick={() => onDelete(transaction.id)}
+            onClick={() => transaction.id && onDelete(transaction.id)}
             className="text-slate-400 transition-colors p-1"
             style={{ color: 'var(--color-error-600)' }}
             onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-error-600)'}

@@ -111,7 +111,8 @@ export const useStore = create<AppState>((set) => {
           } catch (e) {
             console.warn("Could not persist token", e);
           }
-          const user = { id: "u1", name: email, email: email };
+          const user = res.user;
+
           try {
             localStorage.setItem("user", JSON.stringify(user));
           } catch (e) {
@@ -353,14 +354,15 @@ export const useStore = create<AppState>((set) => {
       }
     },
 
-    loadDashboardSummary: async () => {
+    loadDashboardSummary: async (month?: number, year?: number) => {
       try {
-        const summary = await dashboardApi.fetchDashboardSummary();
+        const summary = await dashboardApi.fetchDashboardSummary(month, year);
         set({ dashboardSummary: summary });
       } catch (err) {
         console.error("loadDashboardSummary failed", err);
       }
     },
+
   };
 
   // Load initial data from API only if authenticated (fire-and-forget)

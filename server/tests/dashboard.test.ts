@@ -27,5 +27,9 @@ describe('Dashboard Module', () => {
 
         expect(response.statusCode).toBe(200)
         expect(response.body.summary).toBeDefined()
+        expect(Array.isArray(response.body.pieData)).toBe(true)
+        expect(Array.isArray(response.body.barData)).toBe(true)
+        expect(response.body.barData.length).toEqual(6)
     })
+
 })

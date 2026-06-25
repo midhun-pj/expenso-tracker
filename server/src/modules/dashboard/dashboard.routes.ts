@@ -12,11 +12,16 @@ export default async function dashboardRoutes(
         },
         async (request) => {
             const user = request.user as any
+            const { month, year } = request.query as {
+                month?: string
+                year?: string
+            }
 
-            return getDashboardSummary(
-                fastify.prisma,
-                user.userId
-            )
+            return getDashboardSummary(fastify.prisma, user.userId, {
+                month: month ? parseInt(month) : undefined,
+                year: year ? parseInt(year) : undefined,
+            })
         }
+
     )
 }

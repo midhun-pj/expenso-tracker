@@ -86,3 +86,32 @@ export function formatDateForInput(value: string | Date): string {
 
     return `${year}-${month}-${day}`;
 }
+
+export function generateDistinctColors(count: number): string[] {
+    const colors = [
+        '#6366f1', // Indigo 500
+        '#ec4899', // Pink 500
+        '#10b981', // Emerald 500
+        '#f59e0b', // Amber 500
+        '#3b82f6', // Blue 500
+        '#8b5cf6', // Violet 500
+        '#ef4444', // Red 500
+        '#06b6d4', // Cyan 500
+        '#f97316', // Orange 500
+        '#84cc16', // Lime 500
+    ];
+
+    if (count <= colors.length) {
+        return colors.slice(0, count);
+    }
+
+    // If more colors needed, generate some variations
+    const result = [...colors];
+    for (let i = colors.length; i < count; i++) {
+        const hue = (i * 137.508) % 360; // Use golden angle for even distribution
+        result.push(`hsl(${hue}, 70%, 50%)`);
+    }
+
+    return result;
+}
+

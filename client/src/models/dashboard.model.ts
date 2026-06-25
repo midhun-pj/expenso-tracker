@@ -10,7 +10,10 @@ export interface DashboardSummary {
         totalExpense: number;
     };
     totalBalance: number;
+    pieData: { name: string; value: number }[];
+    barData: { name: string; amt: number; income: number; expense: number }[];
 }
+
 
 export interface SummaryCardProps {
     title: string;

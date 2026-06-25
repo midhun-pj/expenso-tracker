@@ -2,15 +2,16 @@ import { API_BASE } from "@utils/app.constant";
 import { handleResponse } from "@utils/app.methods";
 
 // Authentication
-export async function login(email: string, password: string): Promise<{ token: string }> {
+export async function login(email: string, password: string): Promise<{ token: string; user: { id: string; email: string; name: string } }> {
     const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
     });
 
-    return (await handleResponse(res)) as { token: string };
+    return (await handleResponse(res)) as { token: string; user: { id: string; email: string; name: string } };
 }
+
 
 export async function register(email: string, password: string, name?: string) {
     const res = await fetch(`${API_BASE}/auth/register`, {

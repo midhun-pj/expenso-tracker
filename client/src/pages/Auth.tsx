@@ -7,7 +7,9 @@ export const Auth: FC = () => {
   const { login, register } = useStore();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,11 +26,12 @@ export const Auth: FC = () => {
       if (isLogin) {
         await login(email, password);
       } else {
-        await register(email, password);
+        await register(email, password, name);
 
         setIsLogin(true);
         setError(null);
         setEmail('');
+        setName('');
         setPassword('');
       }
     } catch (err) {
@@ -76,6 +79,21 @@ export const Auth: FC = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+
+          {!isLogin && (
+            <div className="space-y-1.5 slide-down">
+              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">{strings.nameLabel}</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all text-sm font-medium text-slate-800 placeholder:text-slate-400"
+                placeholder={strings.namePlaceholder}
+                required={!isLogin}
+              />
+            </div>
+          )}
+
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">{strings.usernameLabel}</label>
             <input
@@ -87,6 +105,9 @@ export const Auth: FC = () => {
               required
             />
           </div>
+
+
+
 
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider ml-1">{strings.passwordLabel}</label>

@@ -4,6 +4,8 @@
     "menuDashboard": "Dashboard",
     "menuSettings": "Configuration",
     "menuTransactions": "Transactions",
+    "menuGrocery": "Grocery",
+    "menuProduct": "Products",
     "pageDashboardTitle": "Dashboard Overview",
     "pageDashboardSubtitle": "Welcome back, here is your financial summary.",
     "pageExpensesTitle": "Expense Management",
@@ -14,6 +16,6 @@
     "pageSettingsSubtitle": "Manage your categories and store preferences.",
     "pageDefaultTitle": "Expenso",
     "pageDefaultSubtitle": "",
-    "pageProductTitle": "Manage accounts",
-    "pageProductSubtitle": "Manage all your accounts"
+    "pageProductTitle": "All products",
+    "pageProductSubtitle": "Manage your products in the system"
 }

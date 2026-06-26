@@ -18,17 +18,22 @@ import {
   type Config,
   type ThemeConfig,
 } from "@models/settings.model";
+import type {
+  Product,
+} from "@models/product.model";
 
 // api services
-import * as configApi from "../api/config.api";
-import * as accountsApi from "../api/accounts.api";
-import * as categoriesApi from "../api/categories.api";
-import * as transactionApi from "../api/transaction.api";
-import * as dashboardApi from "../api/dashboard.api";
-import * as authApi from "../api/auth.api";
+import * as configApi from "@api/config.api";
+import * as accountsApi from "@api/accounts.api";
+import * as categoriesApi from "@api/categories.api";
+import * as transactionApi from "@api/transaction.api";
+import * as dashboardApi from "@api/dashboard.api";
+import * as authApi from "@api/auth.api";
+import * as productApi from "@api/product.api";
 
 import { applyTheme } from "../utils/app.methods";
 import { DEFAULT_FILTER_PARAMS } from "../utils/app.constant";
+import type { GetProductQuery } from "@models/product.model";
 
 export const useStore = create<AppState>((set) => {
   let initialAuth = false;
@@ -65,17 +70,25 @@ export const useStore = create<AppState>((set) => {
       },
     },
     dashboardSummary: null,
+    products: {
+      data: [],
+      pagination: {
+        page: 1,
+        limit: 10,
+        total: 0,
+        totalPages: 0,
+      },
+    },
 
     initializeData: async () => {
       try {
         await state.loadCategories().catch(() => []);
         await state.loadAccounts().catch(() => []);
-        const configResp = await configApi
-          .fetchConfig()
-          .catch(() => ({
-            currency: DEFAULT_CURRENCY,
-            themeConfig: DEFAULT_THEME,
-          }));
+        await state.getProducts(DEFAULT_FILTER_PARAMS).catch(() => []);
+        const configResp = await configApi.fetchConfig().catch(() => ({
+          currency: DEFAULT_CURRENCY,
+          themeConfig: DEFAULT_THEME,
+        }));
 
         const currencySymbol = configResp?.currency;
         const themeCfg = configResp?.themeConfig;
@@ -293,12 +306,12 @@ export const useStore = create<AppState>((set) => {
           transactions:
             append && state.transactions
               ? {
-                data: [
-                  ...(state.transactions.data || []),
-                  ...transactions.data,
-                ],
-                pagination: transactions.pagination,
-              }
+                  data: [
+                    ...(state.transactions.data || []),
+                    ...transactions.data,
+                  ],
+                  pagination: transactions.pagination,
+                }
               : transactions,
         }));
       } catch (err) {
@@ -363,6 +376,55 @@ export const useStore = create<AppState>((set) => {
       }
     },
 
+    // grocery actions
+    getProducts: async (params: GetProductQuery, append = false) => {
+      try {
+        const products = await productApi.list(params);
+
+        set((state) => ({
+          products:
+            append && state.products
+              ? {
+                  data: [...(state.products.data || []), ...products.data],
+                  pagination: products.pagination,
+                }
+              : products,
+        }));
+      } catch (err) {
+        console.error("getProducts failed", err);
+      }
+    },
+
+    addProduct: async (data: Omit<Product, "id">) => {
+      try {
+        await productApi.create(data);
+        await state.getProducts(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("addProduct failed", err);
+        throw err;
+      }
+    },
+
+    updateProduct: async (id: string, data: Partial<Product>) => {
+      try {
+        await productApi.update(id, data);
+        await state.getProducts(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("updateProduct failed", err);
+        throw err;
+      }
+    },
+
+    removeProduct: async (id: string) => {
+      try {
+        await productApi.deleteProduct(id);
+        await state.getProducts(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("removeProduct failed", err);
+        throw err;
+      }
+    },
+    
   };
 
   // Load initial data from API only if authenticated (fire-and-forget)

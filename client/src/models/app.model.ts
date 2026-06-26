@@ -6,6 +6,7 @@ import type { Config, ThemeConfig } from "@models/settings.model";
 import type { PaginatedResponse } from "@models/common.model";
 import type { TransactionsQuery } from "@models/transaction.model";
 import type { DashboardSummary } from "@models/dashboard.model";
+import type { GetProductQuery, Product } from "./product.model";
 
 export interface AppState {
     user: User | null;
@@ -19,6 +20,9 @@ export interface AppState {
     theme: ThemeConfig;
 
     dashboardSummary: DashboardSummary | null;
+
+    // Grocery State
+    products: PaginatedResponse<Product> | null;
 
 
     // Account Actions
@@ -59,6 +63,12 @@ export interface AppState {
     deleteTransaction: (id: string) => Promise<void>;
 
     loadDashboardSummary: (month?: number, year?: number) => Promise<void>;
+
+    // Grocery Actions
+    getProducts: (query: GetProductQuery, append: boolean) => Promise<void>;
+    addProduct: (data: Omit<Product, "id">) => Promise<void>;
+    updateProduct: (id: string, data: Partial<Product>) => Promise<void>;
+    removeProduct: (id: string) => Promise<void>;
 }
 
 export type AppLogoProps = {

@@ -1,0 +1,7 @@
+{
+    "title": "Create new product",
+    "formLabels": {
+        "name": "Name",
+        "brand": "Brand name"
+    }
+}

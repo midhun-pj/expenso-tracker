@@ -1,5 +1,10 @@
-import type { FC } from 'react';
-import { ArrowDownRight, ArrowUpRight, DollarSign, TrendingUp } from 'lucide-react';
+import type { FC } from "react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  DollarSign,
+  TrendingUp,
+} from "lucide-react";
 import {
   PieChart,
   Pie,
@@ -11,18 +16,18 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
-} from 'recharts';
+  ResponsiveContainer,
+} from "recharts";
 
-import { useStore } from '@store/useStore';
-import { useDashboardFilters } from '@hooks/useDashboardFilters';
-import { SummaryCard } from '@components/common/SummaryCard';
-import FilterDropdown from '@components/common/FilterDropdown';
-import { List } from '@components/common/List';
+import { useStore } from "@store/useStore";
+import { useDashboardFilters } from "@hooks/useDashboardFilters";
+import { SummaryCard } from "@components/common/SummaryCard";
+import FilterDropdown from "@components/common/FilterDropdown";
+import List from "@components/common/List";
 
-import type { Account } from '@models/account.model';
-import { generateDistinctColors } from '@utils/app.methods';
-import Strings from './nls/dashboard_strings.json';
+import type { Account } from "@models/account.model";
+import { generateDistinctColors } from "@utils/app.methods";
+import Strings from "./nls/dashboard_strings.json";
 
 export const Dashboard: FC = () => {
   const { currency, dashboardSummary, theme } = useStore();
@@ -43,34 +48,18 @@ export const Dashboard: FC = () => {
   const pieData = dashboardSummary?.pieData || [];
   const barData = dashboardSummary?.barData || [];
 
-  const listAccounts = {
-    headers: [
-      {
-        key: "name",
-        label: "Name",
-      },
-      {
-        key: "type",
-        label: "Type",
-      },
-      {
-        key: "balance",
-        label: "Balance",
-      },
-    ],
-    rows: accounts.map((account: Account) => ({
-      id: account.id,
-      name: account.name,
-      type: account.type,
-      balance: `${currency}${Number(account?.balance || 0).toFixed(2)}`,
-    })),
-  };
+  const allAccounts = accounts.map((account: Account) => ({
+    id: account.id,
+    name: account.name,
+    type: account.type,
+    balance: `${currency}${Number(account?.balance || 0).toFixed(2)}`,
+  }));
 
   const colors = generateDistinctColors(pieData.length);
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <section className='flex items-center gap-3 flex-wrap bg-white p-4 rounded-2xl shadow-sm border border-slate-100'>
+      <section className="flex items-center gap-3 flex-wrap bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
         <FilterDropdown
           filterValue={String(filterYear)}
           filterOptions={yearOptions}
@@ -92,7 +81,10 @@ export const Dashboard: FC = () => {
           value={`${currency}${totalIncome.toFixed(2)}`}
           icon={
             <div className="bg-primary-50 p-4 rounded-xl">
-              <DollarSign className="w-8 h-8" style={{ color: 'var(--color-primary-600)' }} />
+              <DollarSign
+                className="w-8 h-8"
+                style={{ color: "var(--color-primary-600)" }}
+              />
             </div>
           }
         >
@@ -119,25 +111,45 @@ export const Dashboard: FC = () => {
 
         <SummaryCard
           title={Strings.netBalance}
-          value={`${netBalance >= 0 ? '+' : '-'}${currency}${Math.abs(netBalance).toFixed(2)}`}
+          value={`${netBalance >= 0 ? "+" : "-"}${currency}${Math.abs(netBalance).toFixed(2)}`}
           icon={
             <div className="bg-success-50 p-4 rounded-xl">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'var(--color-success-600)' }}>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-8 h-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                style={{ color: "var(--color-success-600)" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                />
               </svg>
             </div>
           }
         >
           <div className="w-full bg-slate-100 rounded-full h-2.5 mt-3 w-32">
-            <div className="h-2.5 rounded-full" style={{ backgroundColor: 'var(--color-success-500)', width: `${Math.min(100, totalIncome > 0 ? (netBalance / totalIncome) * 100 : 0)}%` }}></div>
+            <div
+              className="h-2.5 rounded-full"
+              style={{
+                backgroundColor: "var(--color-success-500)",
+                width: `${Math.min(100, totalIncome > 0 ? (netBalance / totalIncome) * 100 : 0)}%`,
+              }}
+            ></div>
           </div>
         </SummaryCard>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h3 className="text-lg font-bold text-slate-800 mb-6">{Strings.expenseDistribution}</h3>
-          <div className="h-64" style={{ height: '16rem', width: '100%' }}>
+          <h3 className="text-lg font-bold text-slate-800 mb-6">
+            {Strings.expenseDistribution}
+          </h3>
+          <div className="h-64" style={{ height: "16rem", width: "100%" }}>
             {pieData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -152,10 +164,17 @@ export const Dashboard: FC = () => {
                     dataKey="value"
                   >
                     {pieData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={colors[index % colors.length]}
+                      />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value) => `${currency}${Number(value).toFixed(2)}`} />
+                  <Tooltip
+                    formatter={(value) =>
+                      `${currency}${Number(value).toFixed(2)}`
+                    }
+                  />
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
@@ -168,7 +187,9 @@ export const Dashboard: FC = () => {
         </div>
 
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-          <h3 className="text-lg font-bold text-slate-800 mb-6">{Strings.monthlyTrends}</h3>
+          <h3 className="text-lg font-bold text-slate-800 mb-6">
+            {Strings.monthlyTrends}
+          </h3>
           <div className="h-64">
             {barData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -177,17 +198,28 @@ export const Dashboard: FC = () => {
                   <XAxis dataKey="name" axisLine={false} tickLine={false} />
                   <YAxis axisLine={false} tickLine={false} />
                   <Tooltip
-                    cursor={{ fill: '#f1f5f9' }}
+                    cursor={{ fill: "#f1f5f9" }}
                     formatter={(value, name) => [
                       `${currency}${Number(value).toFixed(2)}`,
-                      name === 'expense' ? 'Expense' : 'Income'
+                      name === "expense" ? "Expense" : "Income",
                     ]}
                   />
                   <Legend />
-                  <Bar dataKey="expense" name="expense" stackId="a" fill={theme?.primaryColor || '#4f46e5'} radius={[0, 0, 0, 0]} />
-                  <Bar dataKey="income" name="income" stackId="a" fill={theme?.successColor || '#10b981'} radius={[4, 4, 0, 0]} />
+                  <Bar
+                    dataKey="expense"
+                    name="expense"
+                    stackId="a"
+                    fill={theme?.primaryColor || "#4f46e5"}
+                    radius={[0, 0, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="income"
+                    name="income"
+                    stackId="a"
+                    fill={theme?.successColor || "#10b981"}
+                    radius={[4, 4, 0, 0]}
+                  />
                 </BarChart>
-
               </ResponsiveContainer>
             ) : (
               <div className="flex items-center justify-center h-full text-slate-400">
@@ -198,8 +230,23 @@ export const Dashboard: FC = () => {
         </div>
       </div>
 
-      <List list={listAccounts} />
-
+      <List
+        data={allAccounts}
+        headers={[
+          {
+            key: "name",
+            label: "Name",
+          },
+          {
+            key: "type",
+            label: "Type",
+          },
+          {
+            key: "balance",
+            label: "Balance",
+          },
+        ]}
+      />
     </div>
   );
 };

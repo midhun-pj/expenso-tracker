@@ -1,0 +1,9 @@
+{
+    "title": "Products",
+    "addButton": "Create",
+    "searchPlaceholder":"Search Products by name",
+    "tableHeaders": {
+        "name": "Name",
+        "brand": "Brand"
+    }
+}

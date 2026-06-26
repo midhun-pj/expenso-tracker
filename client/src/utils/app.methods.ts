@@ -87,6 +87,15 @@ export function formatDateForInput(value: string | Date): string {
     return `${year}-${month}-${day}`;
 }
 
+export function formatDate(value: string | Date): string {
+    const date = new Date(value);
+    return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    });
+}
+
 export function generateDistinctColors(count: number): string[] {
     const colors = [
         '#6366f1', // Indigo 500

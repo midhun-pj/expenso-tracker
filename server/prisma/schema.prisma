@@ -143,6 +143,7 @@ model Product {
 model Supermarket {
   id        String   @id @default(cuid())
   name      String
+  location  String @default("Unknown")
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   items     GroceryItem[]

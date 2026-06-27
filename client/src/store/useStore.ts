@@ -18,9 +18,7 @@ import {
   type Config,
   type ThemeConfig,
 } from "@models/settings.model";
-import type {
-  Product,
-} from "@models/product.model";
+import type { Product } from "@models/product.model";
 
 // api services
 import * as configApi from "@api/config.api";
@@ -30,10 +28,12 @@ import * as transactionApi from "@api/transaction.api";
 import * as dashboardApi from "@api/dashboard.api";
 import * as authApi from "@api/auth.api";
 import * as productApi from "@api/product.api";
+import * as supermarketApi from "@api/supermarket.api";
 
 import { applyTheme } from "../utils/app.methods";
 import { DEFAULT_FILTER_PARAMS } from "../utils/app.constant";
 import type { GetProductQuery } from "@models/product.model";
+import type { Supermarket } from "@models/supermarket.model";
 
 export const useStore = create<AppState>((set) => {
   let initialAuth = false;
@@ -80,11 +80,15 @@ export const useStore = create<AppState>((set) => {
       },
     },
 
+    superMarkets: [],
+
     initializeData: async () => {
       try {
         await state.loadCategories().catch(() => []);
         await state.loadAccounts().catch(() => []);
         await state.getProducts(DEFAULT_FILTER_PARAMS).catch(() => []);
+        await state.getSupermarkets().catch(() => []);
+
         const configResp = await configApi.fetchConfig().catch(() => ({
           currency: DEFAULT_CURRENCY,
           themeConfig: DEFAULT_THEME,
@@ -424,7 +428,48 @@ export const useStore = create<AppState>((set) => {
         throw err;
       }
     },
-    
+
+    getSupermarkets: async (search = "") => {
+      try {
+        const superMarkets = await supermarketApi.list(search);
+
+        set({
+          superMarkets: superMarkets,
+        });
+      } catch (err) {
+        console.error("getSupermarkets failed", err);
+      }
+    },
+
+    addSupermarket: async (data: Omit<Supermarket, "id">) => {
+      try {
+        await supermarketApi.create(data);
+        await state.getSupermarkets();
+      } catch (err) {
+        console.error("addSupermarkets failed", err);
+        throw err;
+      }
+    },
+
+    updateSupermarket: async (id: string, data: Partial<Supermarket>) => {
+      try {
+        await supermarketApi.update(id, data);
+        await state.getSupermarkets();
+      } catch (err) {
+        console.error("updateSupermarkets failed", err);
+        throw err;
+      }
+    },
+
+    removeSupermarket: async (id: string) => {
+      try {
+        await supermarketApi.deleteSupermarket(id);
+        await state.getSupermarkets();
+      } catch (err) {
+        console.error("removeSupermarkets failed", err);
+        throw err;
+      }
+    },
   };
 
   // Load initial data from API only if authenticated (fire-and-forget)

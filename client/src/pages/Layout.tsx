@@ -15,6 +15,7 @@ const menuItems = [
   { path: '/', label: Strings.menuDashboard, icon: LayoutDashboard },
   { path: '/transactions', label: Strings.menuTransactions, icon: CreditCard },
   { path: '/product-list', label: Strings.menuProduct, icon: CreditCard },
+  { path: '/supermarkets', label: Strings.menuSupermarket, icon: CreditCard },
   { path: '/settings', label: Strings.menuSettings, icon: Settings },
 ];
 
@@ -22,6 +23,7 @@ const pageTitles: Record<string, { title: string; subtitle: string }> = {
   '/': { title: Strings.pageDashboardTitle, subtitle: Strings.pageDashboardSubtitle },
   '/transactions': { title: Strings.pageExpensesTitle, subtitle: Strings.pageExpensesSubtitle },
   '/product-list': { title: Strings.pageProductTitle, subtitle: Strings.pageProductSubtitle },
+  '/supermarkets': { title: Strings.pageSupermarketTitle, subtitle: Strings.pageSupermarketSubtitle },
   '/settings': { title: Strings.pageSettingsTitle, subtitle: Strings.pageSettingsSubtitle },
 };
 

@@ -16,7 +16,7 @@ import Strings from "./nls/product_strings.json";
 import CommonStrings from "@utils/nls/common_strings.json";
 
 import { useStore } from "@store/useStore";
-import type { Product } from "@models/grocery.model";
+import type { Product } from "@models/product.model";
 
 export const ProductList: FC = () => {
   const { products, addProduct, updateProduct, removeProduct, getProducts } =
@@ -70,8 +70,8 @@ export const ProductList: FC = () => {
         <AddButton
           buttonClasses={COMMON_BUTTON_CLASS}
           onClick={() => setOpenCreateModal(true)}
-          label={Strings.addButton}
-          mobileLabel={Strings.addButton}
+          label={CommonStrings.create}
+          mobileLabel={CommonStrings.create}
         />
       </div>
 

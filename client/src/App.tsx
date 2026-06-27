@@ -10,6 +10,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Transactions } from './pages/Transactions';
 import { Settings } from './pages/Settings';
 import { ProductList } from '@pages/ProductList';
+import { SupermarketList } from '@pages/SupermarketList';
 
 const App: React.FC = () => {
   const { isAuthenticated } = useStore();
@@ -26,6 +27,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Dashboard />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/product-list" element={<ProductList />} />
+            <Route path="/supermarkets" element={<SupermarketList />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

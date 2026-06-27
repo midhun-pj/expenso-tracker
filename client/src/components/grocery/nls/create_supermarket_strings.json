@@ -1,0 +1,7 @@
+{
+    "title": "Add new supermarket",
+    "formLabels": {
+        "name": "Name",
+        "location": "Location"
+    }
+}

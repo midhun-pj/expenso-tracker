@@ -6,6 +6,7 @@
     "menuTransactions": "Transactions",
     "menuGrocery": "Grocery",
     "menuProduct": "Products",
+    "menuSupermarket": "Supermarkets",
     "pageDashboardTitle": "Dashboard Overview",
     "pageDashboardSubtitle": "Welcome back, here is your financial summary.",
     "pageExpensesTitle": "Expense Management",
@@ -17,5 +18,7 @@
     "pageDefaultTitle": "Expenso",
     "pageDefaultSubtitle": "",
     "pageProductTitle": "All products",
-    "pageProductSubtitle": "Manage your products in the system"
+    "pageProductSubtitle": "Manage your products in the system",
+    "pageSupermarketTitle": "All Supermarkets",
+    "pageSupermarketSubtitle": "Manage your Supermarkets in the system"
 }

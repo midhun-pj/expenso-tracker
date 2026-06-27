@@ -31,7 +31,7 @@ export interface AppState {
   superMarkets: Supermarket[];
 
   // Account Actions
-  loadAccounts: () => Promise<void>;
+  loadAccounts: (search: string) => Promise<void>;
   createAccount: (data: Omit<Account, "id">) => Promise<void>;
   removeAccount: (id: string) => Promise<void>;
 

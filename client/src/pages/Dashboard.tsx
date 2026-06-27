@@ -23,9 +23,7 @@ import { useStore } from "@store/useStore";
 import { useDashboardFilters } from "@hooks/useDashboardFilters";
 import { SummaryCard } from "@components/common/SummaryCard";
 import FilterDropdown from "@components/common/FilterDropdown";
-import List from "@components/common/List";
 
-import type { Account } from "@models/account.model";
 import { generateDistinctColors } from "@utils/app.methods";
 import Strings from "./nls/dashboard_strings.json";
 
@@ -44,16 +42,8 @@ export const Dashboard: FC = () => {
   const totalSpent = dashboardSummary?.summary.totalExpense || 0;
   const netBalance = dashboardSummary?.totalBalance || 0;
 
-  const accounts = dashboardSummary?.accounts || [];
   const pieData = dashboardSummary?.pieData || [];
   const barData = dashboardSummary?.barData || [];
-
-  const allAccounts = accounts.map((account: Account) => ({
-    id: account.id,
-    name: account.name,
-    type: account.type,
-    balance: `${currency}${Number(account?.balance || 0).toFixed(2)}`,
-  }));
 
   const colors = generateDistinctColors(pieData.length);
 
@@ -229,24 +219,7 @@ export const Dashboard: FC = () => {
           </div>
         </div>
       </div>
-
-      <List
-        data={allAccounts}
-        headers={[
-          {
-            key: "name",
-            label: "Name",
-          },
-          {
-            key: "type",
-            label: "Type",
-          },
-          {
-            key: "balance",
-            label: "Balance",
-          },
-        ]}
-      />
+   
     </div>
   );
 };

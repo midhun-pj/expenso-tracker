@@ -256,9 +256,9 @@ export const useStore = create<AppState>((set) => {
     },
 
     // Account Actions
-    loadAccounts: async () => {
+    loadAccounts: async (search = "") => {
       try {
-        const accounts = await accountsApi.list();
+        const accounts = await accountsApi.list(search);
         set({ accounts });
       } catch (err) {
         console.error("loadAccounts failed", err);

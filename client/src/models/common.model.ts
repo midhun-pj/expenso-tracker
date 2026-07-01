@@ -1,3 +1,13 @@
+export const FIELD_TYPES = {
+  TEXT: "text",
+  NUMBER: "number",
+  DATE: "date",
+  TEXTAREA: "textarea",
+  SELECT: "select",
+  TOGGLE_GROUP: "toggle-group"
+}
+
+
 export type FieldType =
   | "text"
   | "number"
@@ -117,6 +127,7 @@ export interface PaginatedResponse<T> {
 
 export interface ActionButtonProps {
   onClick: () => void;
+  title?: string;
 }
 
 export interface AddButtonProps extends ActionButtonProps {

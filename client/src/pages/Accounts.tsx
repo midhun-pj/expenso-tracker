@@ -70,7 +70,7 @@ export const AccountList: FC = () => {
 
       {openCreateModal && (
         <CreateAccount
-          setIsModalOpen={setOpenCreateModal}
+          setIsModalOpen={(val) => setOpenCreateModal(!!val)}
           addAccount={createAccount}
           accounts={accounts}
         />

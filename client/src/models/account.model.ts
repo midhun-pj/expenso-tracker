@@ -24,12 +24,8 @@ export interface Account extends AccountBase {
 
 
 
-export type AccountsFormProps = {
+export type CreateAccountProps = {
     accounts: Account[];
-
-    createAccount: (data: AccountBase) => Promise<void>;
-
-    removeAccount: (id: string) => Promise<void>;
-
-    currency: string;
+    setIsModalOpen: (val?: boolean) => void;
+    addAccount: (val: AccountBase) => void
 };

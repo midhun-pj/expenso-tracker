@@ -29,11 +29,13 @@ import * as dashboardApi from "@api/dashboard.api";
 import * as authApi from "@api/auth.api";
 import * as productApi from "@api/product.api";
 import * as supermarketApi from "@api/supermarket.api";
+import * as groceryItemApi from "@api/grocery-item.api";
 
 import { applyTheme } from "../utils/app.methods";
 import { DEFAULT_FILTER_PARAMS } from "../utils/app.constant";
 import type { GetProductQuery } from "@models/product.model";
 import type { Supermarket } from "@models/supermarket.model";
+import type { GroceryItemQuery, CreateGroceryItemPayload, BulkCreateGroceryPayload } from "@models/grocery.model";
 
 export const useStore = create<AppState>((set) => {
   let initialAuth = false;
@@ -81,6 +83,8 @@ export const useStore = create<AppState>((set) => {
     },
 
     superMarkets: [],
+    groceryItems: null,
+    grocerySummary: null,
 
     initializeData: async () => {
       try {
@@ -310,12 +314,12 @@ export const useStore = create<AppState>((set) => {
           transactions:
             append && state.transactions
               ? {
-                  data: [
-                    ...(state.transactions.data || []),
-                    ...transactions.data,
-                  ],
-                  pagination: transactions.pagination,
-                }
+                data: [
+                  ...(state.transactions.data || []),
+                  ...transactions.data,
+                ],
+                pagination: transactions.pagination,
+              }
               : transactions,
         }));
       } catch (err) {
@@ -389,9 +393,9 @@ export const useStore = create<AppState>((set) => {
           products:
             append && state.products
               ? {
-                  data: [...(state.products.data || []), ...products.data],
-                  pagination: products.pagination,
-                }
+                data: [...(state.products.data || []), ...products.data],
+                pagination: products.pagination,
+              }
               : products,
         }));
       } catch (err) {
@@ -467,6 +471,81 @@ export const useStore = create<AppState>((set) => {
         await state.getSupermarkets();
       } catch (err) {
         console.error("removeSupermarkets failed", err);
+        throw err;
+      }
+    },
+
+    // grocery item actions
+    getGroceryItems: async (params: GroceryItemQuery, append = false) => {
+      try {
+        const groceryItems = await groceryItemApi.list(params);
+        set((s) => ({
+          groceryItems:
+            append && s.groceryItems
+              ? {
+                data: [...(s.groceryItems.data || []), ...groceryItems.data],
+                pagination: groceryItems.pagination,
+              }
+              : groceryItems,
+        }));
+      } catch (err) {
+        console.error("getGroceryItems failed", err);
+      }
+    },
+
+    getGrocerySummary: async (params: GroceryItemQuery, append = false) => {
+      try {
+        const grocerySummary = await groceryItemApi.getSummary(params);
+        set((s) => ({
+          grocerySummary:
+            append && s.grocerySummary
+              ? {
+                data: [...(s.grocerySummary.data || []), ...grocerySummary.data],
+                pagination: grocerySummary.pagination,
+              }
+              : grocerySummary,
+        }));
+      } catch (err) {
+        console.error("getGrocerySummary failed", err);
+      }
+    },
+
+    addGroceryItem: async (data: CreateGroceryItemPayload) => {
+      try {
+        await groceryItemApi.create(data);
+        await state.getGroceryItems(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("addGroceryItem failed", err);
+        throw err;
+      }
+    },
+
+    addGroceryItemsBulk: async (data: BulkCreateGroceryPayload) => {
+      try {
+        await groceryItemApi.createBulk(data);
+        await state.getGroceryItems(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("addGroceryItemsBulk failed", err);
+        throw err;
+      }
+    },
+
+    updateGroceryItem: async (id: string, data: Partial<CreateGroceryItemPayload>) => {
+      try {
+        await groceryItemApi.update(id, data);
+        await state.getGroceryItems(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("updateGroceryItem failed", err);
+        throw err;
+      }
+    },
+
+    removeGroceryItem: async (id: string) => {
+      try {
+        await groceryItemApi.deleteGroceryItem(id);
+        await state.getGroceryItems(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("removeGroceryItem failed", err);
         throw err;
       }
     },

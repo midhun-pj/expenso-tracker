@@ -16,7 +16,7 @@ export const CreateSupermarket: FC<any> = ({
 }) => {
 
   let initialValues: any = {};
-  
+
   const fields: FormField[] = [
     {
       name: "name",
@@ -33,7 +33,7 @@ export const CreateSupermarket: FC<any> = ({
     },
   ];
 
-  if (editingSupermarket.id) {
+  if (editingSupermarket?.id) {
     initialValues = editingSupermarket;
   }
 

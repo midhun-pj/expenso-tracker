@@ -35,7 +35,7 @@ async function cleanDatabase() {
     const deletedSupermarket = await prisma.supermarket.deleteMany({});
 
     console.log('Deleting product')
-    const deletedProduct = await prisma.supermarket.deleteMany({});
+    const deletedProduct = await prisma.product.deleteMany({});
 
     console.log('✅ Database cleanup completed successfully!')
     console.log('\nSummary:')

@@ -16,7 +16,7 @@ export const CreateProduct: FC<any> = ({
 }) => {
 
   let initialValues: any = {};
-  
+
   const fields: FormField[] = [
     {
       name: "name",
@@ -33,7 +33,7 @@ export const CreateProduct: FC<any> = ({
     },
   ];
 
-  if (editingProduct.id) {
+  if (editingProduct?.id) {
     initialValues = editingProduct;
   }
 
@@ -53,13 +53,13 @@ export const CreateProduct: FC<any> = ({
         <section className="p-6 max-h-[calc(100vh-200px)] overflow-y-auto">
           <DynamicForm
             fields={fields}
-            submitLabel={CommonStrings.create}
+            submitLabel={initialValues?.id? CommonStrings.update: CommonStrings.create}
             resetOnSubmit={true}
             onSubmit={(values: any) => {
               if (initialValues?.id) {
                 updateProduct(initialValues.id, {
                   name: values.name,
-                  brandName: values.brandName,
+                  brandName: values.brandName || "",
                 });
               } else {
                 addProduct(values);

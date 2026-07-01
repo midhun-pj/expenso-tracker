@@ -13,6 +13,7 @@ import {
     getGroceryItemWithHistoryService,
     updateGroceryItemService,
     deleteGroceryItemService,
+    getGrocerySummaryService,
 } from './grocery-items.service'
 
 export async function createGroceryItem(
@@ -56,7 +57,9 @@ export async function getGroceryItems(
             limit?: string
             search?: string
             month?: string
+            year?: string
             supermarketId?: string
+            productId?: string
         }
     }>,
     reply: FastifyReply
@@ -77,11 +80,44 @@ export async function getGroceryItems(
             page,
             limit,
             search: query.search?.trim(),
-            month: query.month?.trim(),
+            month: query.month ? parseInt(query.month) : undefined,
+            year: query.year ? parseInt(query.year) : undefined,
             supermarketId: query.supermarketId?.trim(),
+            productId: query.productId?.trim(),
         }
     )
 
+    return reply.send(result)
+}
+
+export async function getGrocerySummary(
+    request: FastifyRequest<{
+        Querystring: {
+            page?: string
+            limit?: string
+            search?: string
+        }
+    }>,
+    reply: FastifyReply
+) {
+    const user = request.user as any
+    const query = request.query
+
+    const page = Math.max(parseInt(query.page || '1'), 1)
+    const limit = Math.min(
+        Math.max(parseInt(query.limit || '12'), 1),
+        100
+    )
+
+    const result = await getGrocerySummaryService(
+        request.server.prisma,
+        user.userId,
+        {
+            page,
+            limit,
+            search: query.search?.trim(),
+        }
+    )
     return reply.send(result)
 }
 

@@ -2,5 +2,8 @@
     "create": "Create",
     "add": "Add",
     "update": "Update",
-    "loadMore": "Load more . . ."
+    "loadMore": "Load more . . .",
+    "unknown": "Unknown",
+    "cancel": "Cancel",
+    "save": "Save"
 }

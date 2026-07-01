@@ -7,6 +7,7 @@ import {
     getGroceryItemById,
     updateGroceryItem,
     deleteGroceryItem,
+    getGrocerySummary,
 } from './grocery-items.controller'
 
 export default async function groceryItemsRoutes(
@@ -42,6 +43,20 @@ export default async function groceryItemsRoutes(
             preHandler: [fastify.authenticate],
         },
         getGroceryItems
+    )
+
+    fastify.get<{
+        Querystring: {
+            page?: string
+            limit?: string
+            search?: string
+        }
+    }>(
+        '/summary',
+        {
+            preHandler: [fastify.authenticate],
+        },
+        getGrocerySummary
     )
 
     fastify.get<{ Params: { id: string } }>(

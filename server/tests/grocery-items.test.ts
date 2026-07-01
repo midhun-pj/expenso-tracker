@@ -16,17 +16,18 @@ beforeAll(async () => {
     const auth = await createAndLoginUser(app)
     token = auth.token
 
+    const uniqueSuffix = Date.now() + Math.random().toString(36).substring(2, 7)
     // Seed a product and supermarket required for grocery item foreign keys
     const productRes = await request(app.server)
         .post('/api/products')
         .set('Authorization', `Bearer ${token}`)
-        .send({ name: 'Whole Milk' })
+        .send({ name: `Whole Milk ${uniqueSuffix}` })
     productId = productRes.body.id
 
     const supermarketRes = await request(app.server)
         .post('/api/supermarkets')
         .set('Authorization', `Bearer ${token}`)
-        .send({ name: 'Carrefour' })
+        .send({ name: `Carrefour ${uniqueSuffix}` })
     supermarketId = supermarketRes.body.id
 })
 
@@ -67,6 +68,19 @@ describe('Grocery Items Module', () => {
         expect(response.body.pagination).toHaveProperty('currentPage')
         expect(response.body.pagination).toHaveProperty('totalCount')
         expect(response.body.pagination).toHaveProperty('hasNextPage')
+    })
+
+    it('should list grocery summary with pagination metadata and support search', async () => {
+        const response = await request(app.server)
+            .get('/api/grocery-items/summary?page=1&limit=10&search=Milk')
+            .set('Authorization', `Bearer ${token}`)
+
+        expect(response.statusCode).toBe(200)
+        expect(Array.isArray(response.body.data)).toBe(true)
+        expect(response.body.pagination).toHaveProperty('page')
+        expect(response.body.pagination).toHaveProperty('limit')
+        expect(response.body.pagination).toHaveProperty('total')
+        expect(response.body.pagination).toHaveProperty('totalPages')
     })
 
     it('should filter grocery items by month', async () => {

@@ -61,11 +61,13 @@ export async function getGroceryItemsService(
         page: number
         limit: number
         search?: string
-        month?: string
+        month?: number
+        year?: number
         supermarketId?: string
+        productId?: string
     }
 ) {
-    const { page, limit, search, month, supermarketId } =
+    const { page, limit, search, month, year, supermarketId, productId } =
         options
     const skip = (page - 1) * limit
 
@@ -75,14 +77,25 @@ export async function getGroceryItemsService(
         where.supermarketId = supermarketId
     }
 
-    if (month) {
-        const [year, mon] = month.split('-').map(Number)
-        const startDate = new Date(year, mon - 1, 1)
-        const endDate = new Date(year, mon, 1)
+    if (month || year) {
+        const startDate = new Date(
+            year || new Date().getFullYear(),
+            month ? Number(month) - 1 : 0,
+            1
+        )
+        const endDate = new Date(
+            year || new Date().getFullYear(),
+            month ? Number(month) : 12,
+            1
+        )
         where.date = {
             gte: startDate,
             lt: endDate,
         }
+    }
+
+    if (productId) {
+        where.productId = productId
     }
 
     if (search) {
@@ -134,7 +147,7 @@ export async function getGroceryItemByIdService(
     })
 }
 
-function pricePerUnit(
+export function pricePerUnit(
     price: number,
     quantity: number,
     unit: string
@@ -145,6 +158,81 @@ function pricePerUnit(
     if (unit === 'ML') return price / (quantity / 1000)
     if (unit === 'COUNT') return price / quantity
     return price / quantity
+}
+
+export async function getGrocerySummaryService(
+    prisma: PrismaClient,
+    userId: string,
+    options: {
+        page: number
+        limit: number
+        search?: string
+    }
+) {
+    const { page, limit, search } = options
+    const where: any = { userId }
+
+    if (search) {
+        where.product = {
+            name: {
+                contains: search,
+            },
+        }
+    }
+
+    const allItems = await prisma.groceryItem.findMany({
+        where,
+        include: groceryItemInclude,
+        orderBy: { date: 'desc' },
+    })
+
+    const productMap = new Map<string, any>()
+
+    for (const item of allItems) {
+        const productId = item.productId
+        const ppu = pricePerUnit(item.price, item.quantity, item.unit)
+
+        if (!productMap.has(productId)) {
+            productMap.set(productId, {
+                product: item.product,
+                latestPurchase: item,
+                bestPurchase: item,
+                minPpu: ppu,
+                count: 1,
+            })
+        } else {
+            const entry = productMap.get(productId)
+            entry.count++
+            if (ppu < entry.minPpu) {
+                entry.minPpu = ppu
+                entry.bestPurchase = item
+            }
+        }
+    }
+
+    const summaryList = Array.from(productMap.values()).map((entry) => ({
+        ...entry.latestPurchase,
+        best_price: entry.bestPurchase.price,
+        best_quantity: entry.bestPurchase.quantity,
+        best_unit: entry.bestPurchase.unit,
+        best_store: entry.bestPurchase.supermarket.name,
+        purchaseCount: entry.count,
+    }))
+
+    const totalCount = summaryList.length
+    const skip = (page - 1) * limit
+    const paginatedData = summaryList.slice(skip, skip + limit)
+    const totalPages = Math.ceil(totalCount / limit)
+
+    return {
+        data: paginatedData,
+        pagination: {
+            page,
+            limit,
+            total: totalCount,
+            totalPages,
+        },
+    }
 }
 
 export async function getGroceryItemWithHistoryService(

@@ -1,15 +1,15 @@
-import type { FC } from "react";
-import { X } from "lucide-react";
-
+// strings
 import Strings from "./nls/create_account_strings.json";
 import CommonStrings from "../../utils/nls/common_strings.json";
-
+// components
 import DynamicForm from "@components/common/DynamicForm";
-
+import { CloseButton } from "@components/common/CloseButton";
+// models
+import type { FC } from "react";
 import type { FormField } from "@models/common.model";
-import { ACCOUNT_TYPES, type Account, type AccountBase } from "@models/account.model";
+import { ACCOUNT_TYPES, type Account, type AccountBase, type CreateAccountProps } from "@models/account.model";
 
-export const CreateAccount: FC<any> = ({ setIsModalOpen, addAccount, accounts }) => {
+export const CreateAccount: FC<CreateAccountProps> = ({ setIsModalOpen, addAccount, accounts }) => {
 
   const fields: FormField[] = [
     {
@@ -68,12 +68,7 @@ export const CreateAccount: FC<any> = ({ setIsModalOpen, addAccount, accounts })
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
         <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
           <h3 className="text-lg font-bold text-slate-800">{Strings.title}</h3>
-          <button
-            onClick={() => setIsModalOpen(false)}
-            className="text-slate-400 hover:text-slate-600"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <CloseButton onClick={() => setIsModalOpen(false)} />
         </div>
 
         <section className="p-6 max-h-[calc(100vh-200px)] overflow-y-auto">

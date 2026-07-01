@@ -12,6 +12,7 @@ import type { TransactionsQuery } from "@models/transaction.model";
 import type { DashboardSummary } from "@models/dashboard.model";
 import type { GetProductQuery, Product } from "./product.model";
 import type { Supermarket } from "./supermarket.model";
+import type { GroceryItem, GrocerySummaryItem, GroceryItemQuery, CreateGroceryItemPayload, BulkCreateGroceryPayload } from "./grocery.model";
 
 export interface AppState {
   user: User | null;
@@ -29,6 +30,8 @@ export interface AppState {
   // Grocery State
   products: PaginatedResponse<Product> | null;
   superMarkets: Supermarket[];
+  groceryItems: PaginatedResponse<GroceryItem> | null;
+  grocerySummary: PaginatedResponse<GrocerySummaryItem> | null;
 
   // Account Actions
   loadAccounts: (search: string) => Promise<void>;
@@ -75,9 +78,16 @@ export interface AppState {
   removeProduct: (id: string) => Promise<void>;
 
   getSupermarkets: (search: string) => Promise<void>;
-  addSupermarket:(data: Omit<Supermarket, "id">) => Promise<void>;
+  addSupermarket: (data: Omit<Supermarket, "id">) => Promise<void>;
   updateSupermarket: (id: string, data: Partial<Supermarket>) => Promise<void>;
   removeSupermarket: (id: string) => Promise<void>;
+
+  getGroceryItems: (query: GroceryItemQuery, append?: boolean) => Promise<void>;
+  getGrocerySummary: (query: GroceryItemQuery, append?: boolean) => Promise<void>;
+  addGroceryItem: (data: CreateGroceryItemPayload) => Promise<void>;
+  addGroceryItemsBulk: (data: BulkCreateGroceryPayload) => Promise<void>;
+  updateGroceryItem: (id: string, data: Partial<CreateGroceryItemPayload>) => Promise<void>;
+  removeGroceryItem: (id: string) => Promise<void>;
 }
 
 export type AppLogoProps = {

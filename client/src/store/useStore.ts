@@ -18,17 +18,24 @@ import {
   type Config,
   type ThemeConfig,
 } from "@models/settings.model";
+import type { Product } from "@models/product.model";
 
 // api services
-import * as configApi from "../api/config.api";
-import * as accountsApi from "../api/accounts.api";
-import * as categoriesApi from "../api/categories.api";
-import * as transactionApi from "../api/transaction.api";
-import * as dashboardApi from "../api/dashboard.api";
-import * as authApi from "../api/auth.api";
+import * as configApi from "@api/config.api";
+import * as accountsApi from "@api/accounts.api";
+import * as categoriesApi from "@api/categories.api";
+import * as transactionApi from "@api/transaction.api";
+import * as dashboardApi from "@api/dashboard.api";
+import * as authApi from "@api/auth.api";
+import * as productApi from "@api/product.api";
+import * as supermarketApi from "@api/supermarket.api";
+import * as groceryItemApi from "@api/grocery-item.api";
 
 import { applyTheme } from "../utils/app.methods";
 import { DEFAULT_FILTER_PARAMS } from "../utils/app.constant";
+import type { GetProductQuery } from "@models/product.model";
+import type { Supermarket } from "@models/supermarket.model";
+import type { GroceryItemQuery, CreateGroceryItemPayload, BulkCreateGroceryPayload } from "@models/grocery.model";
 
 export const useStore = create<AppState>((set) => {
   let initialAuth = false;
@@ -65,17 +72,31 @@ export const useStore = create<AppState>((set) => {
       },
     },
     dashboardSummary: null,
+    products: {
+      data: [],
+      pagination: {
+        page: 1,
+        limit: 10,
+        total: 0,
+        totalPages: 0,
+      },
+    },
+
+    superMarkets: [],
+    groceryItems: null,
+    grocerySummary: null,
 
     initializeData: async () => {
       try {
         await state.loadCategories().catch(() => []);
         await state.loadAccounts().catch(() => []);
-        const configResp = await configApi
-          .fetchConfig()
-          .catch(() => ({
-            currency: DEFAULT_CURRENCY,
-            themeConfig: DEFAULT_THEME,
-          }));
+        await state.getProducts(DEFAULT_FILTER_PARAMS).catch(() => []);
+        await state.getSupermarkets().catch(() => []);
+
+        const configResp = await configApi.fetchConfig().catch(() => ({
+          currency: DEFAULT_CURRENCY,
+          themeConfig: DEFAULT_THEME,
+        }));
 
         const currencySymbol = configResp?.currency;
         const themeCfg = configResp?.themeConfig;
@@ -239,9 +260,9 @@ export const useStore = create<AppState>((set) => {
     },
 
     // Account Actions
-    loadAccounts: async () => {
+    loadAccounts: async (search = "") => {
       try {
-        const accounts = await accountsApi.list();
+        const accounts = await accountsApi.list(search);
         set({ accounts });
       } catch (err) {
         console.error("loadAccounts failed", err);
@@ -363,6 +384,171 @@ export const useStore = create<AppState>((set) => {
       }
     },
 
+    // grocery actions
+    getProducts: async (params: GetProductQuery, append = false) => {
+      try {
+        const products = await productApi.list(params);
+
+        set((state) => ({
+          products:
+            append && state.products
+              ? {
+                data: [...(state.products.data || []), ...products.data],
+                pagination: products.pagination,
+              }
+              : products,
+        }));
+      } catch (err) {
+        console.error("getProducts failed", err);
+      }
+    },
+
+    addProduct: async (data: Omit<Product, "id">) => {
+      try {
+        await productApi.create(data);
+        await state.getProducts(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("addProduct failed", err);
+        throw err;
+      }
+    },
+
+    updateProduct: async (id: string, data: Partial<Product>) => {
+      try {
+        await productApi.update(id, data);
+        await state.getProducts(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("updateProduct failed", err);
+        throw err;
+      }
+    },
+
+    removeProduct: async (id: string) => {
+      try {
+        await productApi.deleteProduct(id);
+        await state.getProducts(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("removeProduct failed", err);
+        throw err;
+      }
+    },
+
+    getSupermarkets: async (search = "") => {
+      try {
+        const superMarkets = await supermarketApi.list(search);
+
+        set({
+          superMarkets: superMarkets,
+        });
+      } catch (err) {
+        console.error("getSupermarkets failed", err);
+      }
+    },
+
+    addSupermarket: async (data: Omit<Supermarket, "id">) => {
+      try {
+        await supermarketApi.create(data);
+        await state.getSupermarkets();
+      } catch (err) {
+        console.error("addSupermarkets failed", err);
+        throw err;
+      }
+    },
+
+    updateSupermarket: async (id: string, data: Partial<Supermarket>) => {
+      try {
+        await supermarketApi.update(id, data);
+        await state.getSupermarkets();
+      } catch (err) {
+        console.error("updateSupermarkets failed", err);
+        throw err;
+      }
+    },
+
+    removeSupermarket: async (id: string) => {
+      try {
+        await supermarketApi.deleteSupermarket(id);
+        await state.getSupermarkets();
+      } catch (err) {
+        console.error("removeSupermarkets failed", err);
+        throw err;
+      }
+    },
+
+    // grocery item actions
+    getGroceryItems: async (params: GroceryItemQuery, append = false) => {
+      try {
+        const groceryItems = await groceryItemApi.list(params);
+        set((s) => ({
+          groceryItems:
+            append && s.groceryItems
+              ? {
+                data: [...(s.groceryItems.data || []), ...groceryItems.data],
+                pagination: groceryItems.pagination,
+              }
+              : groceryItems,
+        }));
+      } catch (err) {
+        console.error("getGroceryItems failed", err);
+      }
+    },
+
+    getGrocerySummary: async (params: GroceryItemQuery, append = false) => {
+      try {
+        const grocerySummary = await groceryItemApi.getSummary(params);
+        set((s) => ({
+          grocerySummary:
+            append && s.grocerySummary
+              ? {
+                data: [...(s.grocerySummary.data || []), ...grocerySummary.data],
+                pagination: grocerySummary.pagination,
+              }
+              : grocerySummary,
+        }));
+      } catch (err) {
+        console.error("getGrocerySummary failed", err);
+      }
+    },
+
+    addGroceryItem: async (data: CreateGroceryItemPayload) => {
+      try {
+        await groceryItemApi.create(data);
+        await state.getGroceryItems(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("addGroceryItem failed", err);
+        throw err;
+      }
+    },
+
+    addGroceryItemsBulk: async (data: BulkCreateGroceryPayload) => {
+      try {
+        await groceryItemApi.createBulk(data);
+        await state.getGroceryItems(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("addGroceryItemsBulk failed", err);
+        throw err;
+      }
+    },
+
+    updateGroceryItem: async (id: string, data: Partial<CreateGroceryItemPayload>) => {
+      try {
+        await groceryItemApi.update(id, data);
+        await state.getGroceryItems(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("updateGroceryItem failed", err);
+        throw err;
+      }
+    },
+
+    removeGroceryItem: async (id: string) => {
+      try {
+        await groceryItemApi.deleteGroceryItem(id);
+        await state.getGroceryItems(DEFAULT_FILTER_PARAMS);
+      } catch (err) {
+        console.error("removeGroceryItem failed", err);
+        throw err;
+      }
+    },
   };
 
   // Load initial data from API only if authenticated (fire-and-forget)

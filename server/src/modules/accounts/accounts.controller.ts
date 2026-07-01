@@ -27,9 +27,12 @@ export async function createAccount(request: FastifyRequest, reply: FastifyReply
 export async function getAccounts(request: FastifyRequest, reply: FastifyReply) {
     const user = request.user as any
 
+     const { search = "" } = request.query as {    search?: string  };
+
     const accounts = await getAccountsService(
         request.server.prisma,
-        user.userId
+        user.userId,
+        search
     )
 
     return reply.send(accounts)

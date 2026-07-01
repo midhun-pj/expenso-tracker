@@ -1,18 +1,14 @@
+import { Settings as SettingsIcon } from 'lucide-react';
+// models
 import type { FC } from 'react';
-import { Settings as SettingsIcon, X } from 'lucide-react';
-
-import type { CategoryType, Category } from '@models/category.model';
+import type { CategoryType, Category, CategoryFormProps } from '@models/category.model';
 import type { FormField } from '@models/common.model';
 
 import DynamicForm from '@components/common/DynamicForm';
 
 import Strings from './nls/category_form.json'
+import { CloseButton } from '@components/common/CloseButton';
 
-type CategoryFormProps = {
-    categories: Category[];
-    addCategory: (name: string, type: CategoryType) => void;
-    removeCategory: (id: string) => void;
-}
 
 const fields: FormField[] = [
     {
@@ -82,13 +78,8 @@ export const CategoryForm: FC<CategoryFormProps> = ({ categories, addCategory, r
                     >
                         <span>{category.name}</span>
                         <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">{category.type === 'INCOME' ? 'Income' : 'Expense'}</span>
-                        <button
-                            onClick={() => removeCategory(category.id)}
-                            className="w-5 h-5 flex items-center justify-center rounded-full hover:bg-red-100 hover:text-red-600 text-slate-400 transition-colors"
-                            title={Strings.removeCategory}
-                        >
-                            <X className="w-3 h-3" />
-                        </button>
+
+                        <CloseButton onClick={() => removeCategory(category.id)} title={Strings.removeCategory} />
                     </div>
                 ))}
             </div>

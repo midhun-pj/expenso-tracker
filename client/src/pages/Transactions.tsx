@@ -18,11 +18,8 @@ import {
 } from "@models/transaction.model";
 
 import Strings from "./nls/transactions_strings.json";
-import { DEFAULT_FILTER_PARAMS } from "@utils/app.constant";
+import { COMMON_BUTTON_CLASS, DEFAULT_FILTER_PARAMS } from "@utils/app.constant";
 import { generateMonthOptions, generateYearOptions } from "@utils/app.methods";
-
-const buttonClasses =
-  "flex-center gap-2 bg-primary bg-primary-hover text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm whitespace-nowrap";
 
 export const Transactions: FC = () => {
   const {
@@ -161,14 +158,14 @@ export const Transactions: FC = () => {
               onClick={openMakeModal}
               label={Strings.makeTransferBtn}
               mobileLabel={Strings.makeTransferBtnMobile}
-              buttonClasses={buttonClasses}
+              buttonClasses={COMMON_BUTTON_CLASS}
             />
 
             <AddButton
               onClick={openAddModal}
               label={Strings.addExpenseBtn}
               mobileLabel={Strings.addExpenseBtnMobile}
-              buttonClasses={buttonClasses}
+              buttonClasses={COMMON_BUTTON_CLASS}
             />
           </aside>
         </div>

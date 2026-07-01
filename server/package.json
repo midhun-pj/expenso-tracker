@@ -10,7 +10,9 @@
     "prisma:generate": "prisma generate",
     "test": "vitest run",
     "test:watch": "vitest",
-    "clean-db": "tsx scripts/clean-db.ts"
+    "clean-db": "tsx scripts/clean-db.ts",
+    "migrate-db": "tsx scripts/migrate-db.ts",
+    "migrate-product": "tsx scripts/seed-product.ts"
   },
   "keywords": [],
   "author": "",

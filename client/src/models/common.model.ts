@@ -1,3 +1,12 @@
+export const FIELD_TYPES = {
+  TEXT: "text",
+  NUMBER: "number",
+  DATE: "date",
+  TEXTAREA: "textarea",
+  SELECT: "select",
+  TOGGLE_GROUP: "toggle-group"
+}
+
 
 export type FieldType =
   | "text"
@@ -58,10 +67,7 @@ export interface BaseInputProps {
   value: unknown;
   error?: string;
 
-  onChange: (
-    name: string,
-    value: unknown
-  ) => void;
+  onChange: (name: string, value: unknown) => void;
 }
 
 export interface ValidationRules {
@@ -75,10 +81,7 @@ export interface ValidationRules {
 
   pattern?: RegExp;
 
-  custom?: (
-    value: unknown,
-    values: FormValues
-  ) => string | null;
+  custom?: (value: unknown, values: FormValues) => string | null;
 }
 
 export interface ToggleButtonProps {
@@ -95,12 +98,7 @@ export interface FilterDropdownProps {
   onChange: (value: string) => void;
 }
 
-export interface AddButtonProps {
-  onClick: () => void;
-  label: string;
-  mobileLabel: string;
-  buttonClasses?: string;
-}
+
 
 export interface FormFieldWrapperProps {
   label: string;
@@ -115,7 +113,6 @@ export interface SelectOption {
   label: string;
 }
 
-
 export interface Pagination {
   page: number;
   limit: number;
@@ -126,4 +123,15 @@ export interface Pagination {
 export interface PaginatedResponse<T> {
   data: T[];
   pagination: Pagination;
+}
+
+export interface ActionButtonProps {
+  onClick: () => void;
+  title?: string;
+}
+
+export interface AddButtonProps extends ActionButtonProps {
+  label: string;
+  mobileLabel: string;
+  buttonClasses?: string;
 }

@@ -1,0 +1,8 @@
+{
+    "searchPlaceholder":"Search accounts by name",
+    "tableHeaders": {
+        "name": "Name",
+        "type": "Type",
+        "balance": "Balance"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "title": "Add new account",
+    "formLabels": {
+        "name": "Name",
+        "initialBalance": "Initial balance",
+        "type": "Type"
+    }
+}   

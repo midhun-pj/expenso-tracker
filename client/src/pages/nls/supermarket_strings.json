@@ -1,0 +1,7 @@
+{
+    "searchPlaceholder":"Search supermarkets",
+    "tableHeaders": {
+        "name": "Name",
+        "location": "Location"
+    }
+}

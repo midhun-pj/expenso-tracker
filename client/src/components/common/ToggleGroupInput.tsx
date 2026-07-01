@@ -20,7 +20,7 @@ export default function ToggleGroupInput({
       required={field.validation?.required}
       error={error}
     >
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+      <div className="flex flex-wrap gap-2 ">
         {field.options.map((option) => {
           const isActive =
             value === option.value;

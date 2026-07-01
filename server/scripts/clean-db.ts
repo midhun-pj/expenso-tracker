@@ -28,6 +28,15 @@ async function cleanDatabase() {
     const deletedConfigs = await prisma.config.deleteMany({})
     console.log(`✓ Deleted ${deletedConfigs.count} configs\n`)
 
+    console.log('Deleting users')
+    const deletedUsers = await prisma.user.deleteMany({});
+
+    console.log('Deleting supermarket')
+    const deletedSupermarket = await prisma.supermarket.deleteMany({});
+
+    console.log('Deleting product')
+    const deletedProduct = await prisma.product.deleteMany({});
+
     console.log('✅ Database cleanup completed successfully!')
     console.log('\nSummary:')
     console.log(`  - Accounts: ${deletedAccounts.count}`)
@@ -35,6 +44,10 @@ async function cleanDatabase() {
     console.log(`  - Transactions: ${deletedTransactions.count}`)
     console.log(`  - Transaction Entries: ${deletedEntries.count}`)
     console.log(`  - Configs: ${deletedConfigs.count}`)
+    console.log('USers', deletedUsers);
+    console.log('supermarket', deletedSupermarket);
+    console.log('product', deletedProduct);
+    
   } catch (error) {
     console.error('❌ Error during database cleanup:', error)
     process.exit(1)

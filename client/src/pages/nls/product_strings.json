@@ -1,0 +1,7 @@
+{
+    "searchPlaceholder":"Search Products by name",
+    "tableHeaders": {
+        "name": "Name",
+        "brand": "Brand"
+    }
+}

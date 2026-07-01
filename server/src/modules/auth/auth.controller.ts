@@ -152,3 +152,26 @@ export async function me(request: FastifyRequest, reply: FastifyReply) {
         throw error
     }
 }
+
+export async function deleteUser(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const user = request.user as any
+
+        await request.server.prisma.user.delete({
+            where: {
+                id: user.userId,
+            },
+        })
+
+        return reply.code(204).send()
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            return reply.code(400).send({
+                statusCode: 400,
+                error: 'Bad Request',
+                message: error.issues,
+            })
+        }
+        throw error
+    }
+}
